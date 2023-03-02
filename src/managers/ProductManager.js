@@ -7,14 +7,17 @@ class ProductManager {
     this.#path = path;
   }
 
-  static id = 0;
   // AGREGA LOS PRODUCTOS
-  async addProduct(title, description, price, thumbnail, code, stock) {
+  async addProduct(title, description, code, price, stock, category, thumbnail=[]) {
     try {
       const products = await this.getProducts();
-      ProductManager.id++;
 
-      if (!title || !description || !price || !thumbnail || !code || !stock) {
+            // Actualizar el ID del producto
+            ProductManager.id = products.reduce((maxId, product) => {
+              return product.id > maxId ? product.id : maxId;
+            }, 0) + 1;
+
+      if (!title || !description || !code || !price || !stock || !category) {
         console.log("Error: Todos los campos son obligatorios");
         return;
       }
@@ -29,14 +32,17 @@ class ProductManager {
       const newProduct = {
         title,
         description,
-        price,
-        thumbnail,
         code,
+        price,
         stock,
+        category,
+        thumbnail,
+        status: true,
         id: ProductManager.id,
       };
       products.push(newProduct);
-      await fs.promises.writeFile(this.#path, JSON.stringify(products));
+      await fs.promises.writeFile(this.#path, JSON.stringify(products, null, 2));
+      return newProduct;
     } catch (error) {
       console.error(error);
     }
@@ -79,6 +85,7 @@ class ProductManager {
       );
 
       await fs.promises.writeFile(this.#path, JSON.stringify(updatedProducts, null, 2));
+      return updatedProduct;
     } catch (error) {
       console.error(error);
     }
@@ -89,7 +96,7 @@ class ProductManager {
       const products = await this.getProducts();
       const newArray = products.filter((p) => p.id != id);
       await fs.promises.writeFile(this.#path, JSON.stringify(newArray, null, 2));
-      console.log("Nuevo array sin producto eliminado:", newArray);
+      return newArray;
     } catch (error) {
       console.error(error);
     }
@@ -97,93 +104,3 @@ class ProductManager {
 }
 
 export default ProductManager;
-
-// // // TESTING
-// async function main() {
-//   const manager = new ProductManager("./src/data/products.json");
-
-//   // Se agregan productos
-//   await manager.addProduct(
-//     "Mouse Logitech",
-//     "Inalámbrico M280 Rojo",
-//     6900,
-//     "ruta de imágen",
-//     "cod01",
-//     50
-//   );
-//   await manager.addProduct(
-//     "Auriculares Motorola",
-//     "Pulse 120 Blanco",
-//     4200,
-//     "ruta de imágen",
-//     "cod02",
-//     50
-//   );
-//   await manager.addProduct(
-//     "Teclado Logitech",
-//     "K120",
-//     5400,
-//     "ruta de imágen",
-//     "cod03",
-//     50
-//   );
-//   await manager.addProduct(
-//     "Led Samsung",
-//     "H200",
-//     10000,
-//     "ruta de imágen",
-//     "cod04",
-//     50
-//   );
-//   await manager.addProduct(
-//     "Notebook Dell",
-//     "Inspiron 5050",
-//     140000,
-//     "ruta de imágen",
-//     "cod05",
-//     50
-//   );
-//   await manager.addProduct(
-//     "Impresora Brother",
-//     "DCP",
-//     80000,
-//     "ruta de imágen",
-//     "cod06",
-//     50
-//   );
-//   await manager.addProduct(
-//     "Memoria WD",
-//     "Elements 2T",
-//     15000,
-//     "ruta de imágen",
-//     "cod07",
-//     50
-//   );
-//   await manager.addProduct(
-//     "Notebook Toshiba",
-//     "Satellite",
-//     120000,
-//     "ruta de imágen",
-//     "cod08",
-//     50
-//   );
-//   await manager.addProduct(
-//     "Teclado Genius",
-//     "M220",
-//     5000,
-//     "ruta de imágen",
-//     "cod09",
-//     50
-//   );
-//   await manager.addProduct(
-//     "Mouse Genius",
-//     "H100",
-//     4000,
-//     "ruta de imágen",
-//     "cod010",
-//     50
-//   );
-
-// }
-
-// main();
