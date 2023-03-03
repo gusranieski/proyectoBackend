@@ -1,7 +1,7 @@
 import fs from "fs";
 
 class CartManager {
-    static id = 0;  
+  static id = 0;
   #path;
 
   constructor(path = "./src/data/carts.json") {
@@ -25,10 +25,10 @@ class CartManager {
 
       // Actualizar el ID del carrito
       CartManager.id = carts.reduce((maxId, cart) => {
-        return cart.id > maxId ? cart.id : maxId;
-      }, 0) + 1;
+          return cart.id > maxId ? cart.id : maxId;
+        }, 0) + 1;
 
-      const newCart = {       
+      const newCart = {
         id: CartManager.id,
         products: [],
       };
@@ -55,38 +55,37 @@ class CartManager {
   }
 
   // AGREGA UN PRODUCTO AL CARRITO
-  async addProductToCart(req, res) {
+  async addProductToCart(cartId, productId, quantity) {
     try {
-    const cartId = req.params?.cid ? parseInt(req.params.cid) : null; // Verificación para la propiedad cid
-    //   const cartId = parseInt(req.params.cid);
-      const productId = parseInt(req.params.id);
-      const quantity = parseInt(req.body.quantity);
-
       if (!cartId) {
         console.log("Error: cartId not found");
         return;
       }
-  
-      const cart = await this.getCartById(cartId);
+
+      const carts = await this.getCarts();
+
+      const cartIndex = carts.findIndex((c) => c.id === cartId);
+      const cart = carts[cartIndex];
 
       if (!cart) {
         console.log(`Error: cart with id ${cartId} not found`);
         return;
       }
 
-      const productIndex = cart.products.findIndex(p => p.id === productId);
+      const productIndex = cart.products.findIndex((p) => p.id === productId);
       if (productIndex >= 0) {
         cart.products[productIndex].quantity += quantity;
       } else {
-        cart.products = [...cart.products, { id: productId, quantity }];
+        cart.products = [...cart.products, { id: productId, quantity: 1 }];
       }
-      
-  
-      await fs.promises.writeFile(this.#path, JSON.stringify(cart, null, 2));
-      return res.status(200).json(cart);
+
+      carts[cartIndex] = cart;
+
+      await fs.promises.writeFile(this.#path, JSON.stringify(carts, null, 2));
+      return cart;
     } catch (error) {
-        console.error(error);
-      }
+      console.error(error);
+    }
   }
 }
 
