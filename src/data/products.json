@@ -108,16 +108,5 @@
     "thumbnail": [],
     "status": true,
     "id": 10
-  },
-  {
-    "title": "cartucho",
-    "description": "Hp",
-    "code": "cod011",
-    "price": 3000,
-    "stock": 50,
-    "category": "insumos",
-    "thumbnail": [],
-    "status": true,
-    "id": 11
   }
 ]
