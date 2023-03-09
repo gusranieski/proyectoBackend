@@ -39,6 +39,7 @@ productsRouter.post("/", async(req, res) => {
     res.status(400).send({ error: 'Error al agregar el producto' });
     return;
     }
+    req.io.emit("new-product", req.body)
     res.status(201).send(newProduct);
 });
 

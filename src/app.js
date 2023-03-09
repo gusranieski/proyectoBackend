@@ -4,6 +4,7 @@ import cartsRouter from "./routes/carts.router.js";
 import __dirname from "./utils.js";
 import { engine } from "express-handlebars";
 import viewsRouter from "./routes/views.router.js";
+import { Server } from "socket.io";
 
 const app = express();
 
@@ -22,6 +23,23 @@ app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 
 
-app.listen(8080, () => {
+const httpServer = app.listen(8080, () => {
   console.log("Server listening on port 8080");
 });
+
+const socketServer = new Server(httpServer);
+
+socketServer.on("connection", (socket) => {
+  console.log("New client connected!");
+
+  socket.on("message", (data) => {
+    console.log(data);
+  });
+
+  socket.emit("message", "Message sent from server!");
+});
+
+app.use((req, res, next) => {
+  req.io = socketServer;
+  next();
+})

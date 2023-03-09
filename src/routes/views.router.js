@@ -7,11 +7,11 @@ const manager = new ProductManager();
 
 viewsRouter.get("/", async (req, res) => {
   const products = await manager.getProducts();
-  res.render("home", { products, style: "index" });
+  res.render("home", { products });
 });
 
 viewsRouter.get("/real-time-products", (req, res) => {
-  res.render("real_time_products",);
+  res.render("real_time_products");
 });
 
 export default viewsRouter;

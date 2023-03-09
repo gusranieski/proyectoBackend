@@ -108,5 +108,16 @@
     "thumbnail": [],
     "status": true,
     "id": 10
+  },
+  {
+    "title": "silla",
+    "description": "ergonomica",
+    "code": "cod11",
+    "price": 50000,
+    "stock": 50,
+    "category": "sillas",
+    "thumbnail": [],
+    "status": true,
+    "id": 11
   }
 ]
