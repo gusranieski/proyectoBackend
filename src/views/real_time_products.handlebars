@@ -1,8 +1,22 @@
 <div>
-  <h1>Agregar productos:</h1>
-
-  <input type="text" id="input">
-  <div id="paragraph"></div>
+  <h1>Productos en tiempo real:</h1>
+  <div id="product-list">
+    {{#each products}}
+      <div>
+        <ul>
+          <li>{{title}}</li>
+          <li>{{description}}</li>
+          <li>{{code}}</li>
+          <li>{{price}}</li>
+          <li>{{stock}}</li>
+          <li>{{category}}</li>
+          <li>{{thumbnail}}</li>
+          <li>{{status}}</li>
+          <li>{{id}}</li>
+        </ul>
+      </div>
+    {{/each}}
+  </div>
 </div>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/index.js"></script>

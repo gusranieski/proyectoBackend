@@ -39,7 +39,8 @@ productsRouter.post("/", async(req, res) => {
     res.status(400).send({ error: 'Error al agregar el producto' });
     return;
     }
-    req.io.emit("new-product", req.body)
+    req.io.emit("new-product", newProduct);
+    console.log(newProduct);
     res.status(201).send(newProduct);
 });
 
@@ -66,7 +67,8 @@ productsRouter.delete("/:id", async (req, res) => {
         .status(404)
         .send({ error: `No existe el producto con id: ${id}` });
     }
-
+    req.io.emit("delete-product", deletedProduct);
+    console.log("eliminado", deletedProduct);
     res.send({ message: `Producto con id ${id} eliminado correctamente` });
 });
 

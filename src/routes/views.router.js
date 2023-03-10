@@ -10,8 +10,9 @@ viewsRouter.get("/", async (req, res) => {
   res.render("home", { products });
 });
 
-viewsRouter.get("/real-time-products", (req, res) => {
-  res.render("real_time_products");
+viewsRouter.get("/real-time-products", async (req, res) => {
+  const products = await manager.getProducts();
+  res.render("real_time_products", { products });
 });
 
 export default viewsRouter;
