@@ -31,9 +31,9 @@ productsRouter.get("/:id", async(req, res) => {
 });
 
 productsRouter.post("/", async(req, res) => {
-    const { title, description, code, price, stock, category, thumbnails, status } = req.body;
+    const { title, description, code, price, stock, category, thumbnail, status } = req.body;
 
-    const newProduct = await manager.addProduct(title, description, code, parseInt(price), parseInt(stock), category, thumbnails, status);
+    const newProduct = await manager.addProduct(title, description, code, parseInt(price), parseInt(stock), category, thumbnail, status);
 
     if (!newProduct) {
     res.status(400).send({ error: 'Error al agregar el producto' });
@@ -46,9 +46,9 @@ productsRouter.post("/", async(req, res) => {
 
 productsRouter.put("/:id", async (req, res) => {
     const id = parseInt(req.params.id);
-    const { title, description, code, price, stock, category, thumbnails, status } = req.body;
+    const { title, description, code, price, stock, category, thumbnail, status } = req.body;
 
-    const updatedProduct = await manager.updateProduct(id, { title, description, code, price: parseInt(price), stock: parseInt(stock), category, thumbnails, status });
+    const updatedProduct = await manager.updateProduct(id, { title, description, code, price: parseInt(price), stock: parseInt(stock), category, thumbnail, status });
 
     if (!updatedProduct) {
     return res
@@ -69,7 +69,7 @@ productsRouter.delete("/:id", async (req, res) => {
     }
     req.io.emit("delete-product", deletedProduct);
     console.log("eliminado", deletedProduct);
-    res.send({ message: `Producto con id ${id} eliminado correctamente` });
+    res.send({ message: `Producto con id ${id} eliminado correctamente`, products: deletedProduct });
 });
 
 export default productsRouter;
