@@ -12,6 +12,16 @@ const app = express();
 app.use(express.static(__dirname + "/public"));
 app.use(express.urlencoded({ extended: true }));
 
+app.engine("handlebars", engine());
+app.set("view engine", "handlebars");
+app.set("views", __dirname + "/views");
+
+// Rutas
+app.use("/", viewsRouter);
+app.use("/api/products", productsRouter);
+app.use("/api/carts", cartsRouter);
+
+// Configuración de socket.io
 const httpServer = app.listen(8080, () => {
   console.log("Server listening on port 8080");
 });
@@ -32,12 +42,3 @@ app.use((req, res, next) => {
   req.io = io;
   next();
 });
-
-app.engine('handlebars', engine());
-app.set('view engine', 'handlebars');
-app.set('views', __dirname + '/views');
-
-// Rutas
-app.use("/", viewsRouter);
-app.use("/api/products", productsRouter);
-app.use("/api/carts", cartsRouter);
