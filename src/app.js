@@ -5,8 +5,18 @@ import __dirname from "./utils.js";
 import { engine } from "express-handlebars";
 import viewsRouter from "./routes/views.router.js";
 import { Server } from "socket.io";
+import mongoose from "mongoose";
 
 const app = express();
+
+// Configuración de Mongoose
+mongoose
+  .connect(
+    "mongodb+srv://gustavoranieski:pistachO403613@coder-cluster-db.de6gzxv.mongodb.net/?retryWrites=true&w=majority"
+  )
+  .then((conn) => {
+    console.log("Connected to DB!");
+  });
 
 // Configuración express
 app.use(express.static(__dirname + "/public"));
