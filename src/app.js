@@ -12,7 +12,7 @@ const app = express();
 // Configuración de Mongoose
 mongoose
   .connect(
-    "mongodb+srv://gustavoranieski:pistachO403613@coder-cluster-db.de6gzxv.mongodb.net/?retryWrites=true&w=majority"
+    "mongodb+srv://gustavoranieski:pistachO403613@coder-cluster-db.de6gzxv.mongodb.net/ecommerce?retryWrites=true&w=majority"
   )
   .then((conn) => {
     console.log("Connected to DB!");
