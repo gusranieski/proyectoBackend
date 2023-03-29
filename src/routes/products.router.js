@@ -1,5 +1,7 @@
 import { Router, json } from "express";
-import ProductManager from "../managers/ProductManager.js";
+import { ProductManager } from "../dao/index.js";
+// import ProductManager from "../dao/file-managers/product.manager.js";
+// import ProductManager from "../managers/ProductManager.js";
 
 const productsRouter = Router();
 productsRouter.use(json());
@@ -40,7 +42,6 @@ productsRouter.post("/", async(req, res) => {
     return;
     }
     req.io.emit("new-product", newProduct);
-    console.log(newProduct);
     res.status(201).send(newProduct);
 });
 

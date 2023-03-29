@@ -1,0 +1,35 @@
+[
+  {
+    "title": "teclado",
+    "description": "Hp",
+    "code": "cod01",
+    "price": 3000,
+    "stock": 50,
+    "category": "insumos",
+    "thumbnail": [],
+    "status": true,
+    "id": 1
+  },
+  {
+    "title": "teclado",
+    "description": "Hp",
+    "code": "cod02",
+    "price": 3000,
+    "stock": 50,
+    "category": "insumos",
+    "thumbnail": [],
+    "status": true,
+    "id": 2
+  },
+  {
+    "title": "teclado",
+    "description": "Hp",
+    "code": "cod03",
+    "price": 3000,
+    "stock": 50,
+    "category": "insumos",
+    "thumbnail": [],
+    "status": true,
+    "id": 3
+  }
+]
