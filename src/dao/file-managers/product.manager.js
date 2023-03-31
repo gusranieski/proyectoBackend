@@ -16,11 +16,6 @@ class ProductManager {
     try {
       const products = await this.getProducts();
 
-            // // Actualizar el ID del producto
-            // ProductManager.id = products.reduce((maxId, product) => {
-            //   return product.id > maxId ? product.id : maxId;
-            // }, 0) + 1;
-
       if (!title || !description || !code || !price || !stock || !category) {
         console.log("Error: Todos los campos son obligatorios");
         return;
@@ -108,39 +103,3 @@ class ProductManager {
 }
 
 export default ProductManager;
-
-
-// import fs from "fs";
-// import __dirname from "../../utils.js";
-// import { getNextId } from "./utils.js";
-
-// const path = __dirname + "/dao/file-managers/files/products.json";
-
-// export default class ProductManager {
-//   constructor() {
-//     console.log("Working with products using filesystem");
-//   }
-
-//   getAll = async () => {
-//     if (fs.existsSync(path)) {
-//       const data = await fs.promises.readFile(path, "utf-8");
-//       return JSON.parse(data);
-//     }
-//     return [];
-//   };
-
-//   create = async (product) => {
-//     const products = await this.getAll();
-
-//     const newProduct = {
-//       ...product,
-//       id: getNextId(products),
-//     };
-
-//     const updatedProducts = [...products, newProduct];
-
-//     await fs.promises.writeFile(path, JSON.stringify(updatedProducts));
-
-//     return newProduct;
-//   };
-// }

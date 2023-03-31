@@ -21,16 +21,12 @@ mongoose
 // Configuración express
 app.use(express.static(__dirname + "/public"));
 app.use(express.urlencoded({ extended: true }));
+// app.use(express.json());
 
 // Handlebars
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", __dirname + "/views");
-
-// // Rutas
-// app.use("/", viewsRouter);
-// app.use("/api/products", productsRouter);
-// app.use("/api/carts", cartsRouter);
 
 // Configuración de socket.io
 const httpServer = app.listen(8080, () => {

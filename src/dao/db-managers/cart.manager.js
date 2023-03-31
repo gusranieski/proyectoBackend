@@ -1,5 +1,4 @@
 import cartModel from "../models/cart.model.js";
-
 export default class CartManager {
   constructor() {}
 
@@ -27,6 +26,7 @@ export default class CartManager {
 
   addProductToCart = async (cartId, productId, quantity) => {
     const cart = await cartModel.findById(cartId).lean();
+
     if (!cart) {
       console.log(`Error: cart with id ${cartId} not found`);
       return;

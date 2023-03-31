@@ -4,37 +4,66 @@ class ProductManager {
   constructor() {}
 
   async getProducts() {
-    const products = await productModel.find().lean();
-    return products;
+    try {
+      const products = await productModel.find().lean();
+      return products;
+    } catch (error) {
+      console.error(error);
+      throw new Error("Error al obtener los productos");
+    }
   }
 
-  async addProducts(title, description, price, thumbnail, code, stock) {
-    let newProduct = await productModel.create({
-      title,
-      description,
-      price,
-      thumbnail,
-      code,
-      stock,
-    });
-    return newProduct;
+  async addProduct(title, description, code, price, stock, category, thumbnail) {
+    try {
+      const newProduct = await productModel.create({
+        title,
+        description,
+        code,
+        price,
+        stock,
+        category,
+        thumbnail,
+      });
+      return newProduct;
+    } catch (error) {
+      console.error(error);
+      throw new Error("Error al agregar el producto");
+    }
   }
 
   async getProductById(id) {
-    const product = await productModel.find({ _id: id });
-    return product;
+    try {
+      const product = await productModel.findById(id).lean();
+      return product;
+    } catch (error) {
+      console.error(error);
+      throw new Error("Error al obtener el producto");
+    }
   }
-  async updateProduct(id, title, description, price, thumbnail, code, stock) {
-    const filter = { _id: id };
-    const update = { title, description, price, thumbnail, code, stock };
-    let product = await productModel.findOneAndUpdate(filter, update);
-
-    return product;
+    
+  async updateProduct(id, updatedProduct) {
+    console.log(id);
+    try {
+      const updated = await productModel.findOneAndUpdate(
+        { _id: id },
+        updatedProduct,
+        { new: true }
+      ).lean();
+      return updated;
+    } catch (error) {
+      console.error(error);
+      throw new Error("Error al actualizar el producto");
+    }
   }
-
+  
   async deleteProduct(id) {
-    const productDelete = await productModel.deleteOne({ _id: id });
-    return productDelete;
+    try {
+      const deleted = await productModel.findByIdAndDelete(id).lean();
+      return deleted;
+    } catch (error) {
+      console.error(error);
+      throw new Error("Error al eliminar el producto");
+    }
   }
 }
 

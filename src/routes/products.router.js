@@ -1,7 +1,5 @@
 import { Router, json } from "express";
 import { ProductManager } from "../dao/index.js";
-// import ProductManager from "../dao/file-managers/product.manager.js";
-// import ProductManager from "../managers/ProductManager.js";
 
 const productsRouter = Router();
 productsRouter.use(json());
@@ -20,8 +18,8 @@ productsRouter.get("/", async(req, res) => {
 });
 
 productsRouter.get("/:id", async(req, res) => {
-    const id = req.params.id;
-    const product = await manager.getProductById(parseInt(id));
+    const { id } = req.params;
+    const product = await manager.getProductById(id);
 
     if (!product) {
         return res
@@ -46,7 +44,7 @@ productsRouter.post("/", async(req, res) => {
 });
 
 productsRouter.put("/:id", async (req, res) => {
-    const id = parseInt(req.params.id);
+    const { id } = req.params;
     const { title, description, code, price, stock, category, thumbnail, status } = req.body;
 
     const updatedProduct = await manager.updateProduct(id, { title, description, code, price: parseInt(price), stock: parseInt(stock), category, thumbnail, status });
@@ -60,7 +58,7 @@ productsRouter.put("/:id", async (req, res) => {
 });
 
 productsRouter.delete("/:id", async (req, res) => {
-    const id = parseInt(req.params.id);
+    const { id } = req.params;
     const deletedProduct = await manager.deleteProduct(id);
 
     if (!deletedProduct) {
@@ -69,7 +67,6 @@ productsRouter.delete("/:id", async (req, res) => {
         .send({ error: `No existe el producto con id: ${id}` });
     }
     req.io.emit("delete-product", deletedProduct);
-    console.log("eliminado", deletedProduct);
     res.send({ message: `Producto con id ${id} eliminado correctamente`, products: deletedProduct });
 });
 

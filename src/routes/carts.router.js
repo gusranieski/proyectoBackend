@@ -1,7 +1,5 @@
 import { Router, json } from "express";
 import { CartManager } from "../dao/index.js";
-// import CartManager from "../dao/file-managers/cart.manager.js";
-// import CartManager from "../managers/CartManager.js";
 
 const cartsRouter = Router();
 cartsRouter.use(json());
@@ -20,7 +18,7 @@ cartsRouter.get("/", async (req, res) => {
 
 cartsRouter.post("/", async (req, res) => {
   try {
-    const products = req.body.products;
+    const products = req.body;
     const newCart = await manager.addCart(products);
     res.status(201).json(newCart);
   } catch (error) {
@@ -30,9 +28,8 @@ cartsRouter.post("/", async (req, res) => {
 });
 
 cartsRouter.get("/:cid", async (req, res) => {
-  const id = req.params.cid;
-  const cart = await manager.getCartById(parseInt(id));
-
+  const { cid } = req.params;
+  const cart = await manager.getCartById(cid);
   if (!cart) {
     return res
       .status(404)
@@ -44,8 +41,8 @@ cartsRouter.get("/:cid", async (req, res) => {
 
 cartsRouter.post("/:cid/product/:id", async (req, res) => {
   try {
-    const cartId = parseInt(req.params.cid);
-    const productId = parseInt(req.params.id);
+    const  cartId = req.params.cid;
+    const  productId = req.params.id;
     const quantity = parseInt(req.body.quantity);
 
     const cart = await manager.addProductToCart(cartId, productId, quantity);
