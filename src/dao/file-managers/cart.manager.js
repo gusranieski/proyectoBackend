@@ -44,7 +44,7 @@ class CartManager {
   // OBTIENE UN CARRITO POR ID
   async getCartById(id) {
     const carts = await this.getCarts();
-    let cartSearch = carts.find((c) => c.id === id);
+    let cartSearch = carts.find((c) => c.id === parseInt(id));
 
     if (cartSearch == undefined) {
       console.log("Not Found");
@@ -63,7 +63,7 @@ class CartManager {
 
       const carts = await this.getCarts();
 
-      const cartIndex = carts.findIndex((c) => c.id === cartId);
+      const cartIndex = carts.findIndex((c) => c.id === parseInt(cartId));
       const cart = carts[cartIndex];
 
       if (!cart) {

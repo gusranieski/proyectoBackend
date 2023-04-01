@@ -57,8 +57,9 @@ class ProductManager {
   }
   // OBTIENE UN PRODUCTO POR ID
   async getProductById(id) {
+    console.log(id);
     const products = await this.getProducts();
-    let search = products.find((p) => p.id === id);
+    let search = products.find((p) => p.id === parseInt(id));
 
     if (search == undefined) {
       console.log("Not Found");
@@ -70,8 +71,7 @@ class ProductManager {
   async updateProduct(id, updatedFields) {
     try {
       const products = await this.getProducts();
-      const productToUpdate = products.find((p) => p.id === id);
-
+      const productToUpdate = products.find((p) => p.id === parseInt(id));
       if (!productToUpdate) {
         console.log(`Product with id ${id} not found`);
         return;

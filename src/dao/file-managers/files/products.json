@@ -31,5 +31,16 @@
     "thumbnail": [],
     "status": true,
     "id": 3
+  },
+  {
+    "title": "silla gamer",
+    "description": "Hp",
+    "code": "cod04",
+    "price": 80000,
+    "stock": 50,
+    "category": "insumos",
+    "thumbnail": [],
+    "status": true,
+    "id": 4
   }
 ]
