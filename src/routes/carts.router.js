@@ -35,7 +35,6 @@ cartsRouter.get("/:cid", async (req, res) => {
       .status(404)
       .send({ error: `No existe el carrito con id: ${req.params.cid}` });
   }
-
   res.send(cart);
 });
 
@@ -52,6 +51,18 @@ cartsRouter.post("/:cid/product/:id", async (req, res) => {
     console.error(error);
     res.status(500).json({ error: "Error al agregar el producto al carrito" });
   }
+});
+
+cartsRouter.delete("/:cid", async (req, res) => {
+  const { cid } = req.params;
+  const deletedCart = await manager.deleteCart(cid);
+
+  if (!deletedCart) {
+  return res
+      .status(404)
+      .send({ error: `No existe el carrito con id: ${cid}` });
+  }
+  res.send({ message: `Carrito con id ${cid} eliminado correctamente`, carts: deletedCart });
 });
 
 export default cartsRouter;

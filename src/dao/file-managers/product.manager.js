@@ -11,6 +11,16 @@ class ProductManager {
     this.#path = path;
   }
 
+  // OBTIENE LA LISTA DE PRODUCTOS
+  async getProducts() {
+    try {
+      const products = await fs.promises.readFile(this.#path, "utf-8");
+      return JSON.parse(products);
+    } catch (error) {
+      return [];
+    }
+  }
+
   // AGREGA LOS PRODUCTOS
   async addProduct(title, description, code, price, stock, category, thumbnail=[]) {
     try {
@@ -46,15 +56,7 @@ class ProductManager {
       console.error(error);
     }
   }
-  // OBTIENE LA LISTA DE PRODUCTOS
-  async getProducts() {
-    try {
-      const products = await fs.promises.readFile(this.#path, "utf-8");
-      return JSON.parse(products);
-    } catch (error) {
-      return [];
-    }
-  }
+
   // OBTIENE UN PRODUCTO POR ID
   async getProductById(id) {
     console.log(id);
