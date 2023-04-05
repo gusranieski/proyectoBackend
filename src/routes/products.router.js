@@ -7,6 +7,7 @@ productsRouter.use(json());
 
 const manager = new ProductManager();
 
+// llama a todos los productos
 productsRouter.get("/", async(req, res) => {
     const { limit = 10, lean = true, page = 1, title, sort } = req.query;
     const filter = title ? { title: { $regex: title, $options: "i" } } : {};
@@ -21,6 +22,7 @@ productsRouter.get("/", async(req, res) => {
     res.status(200).send({ status: "ok", payload: paginatedProducts });
 });
 
+// obtiene un producto por id
 productsRouter.get("/:id", async(req, res) => {
     const { id } = req.params;
     const product = await manager.getProductById(id);
@@ -34,6 +36,7 @@ productsRouter.get("/:id", async(req, res) => {
     res.send(product);
 });
 
+// crea un producto
 productsRouter.post("/", async(req, res) => {
     const { title, description, code, price, stock, category, thumbnail, status } = req.body;
 
@@ -47,6 +50,7 @@ productsRouter.post("/", async(req, res) => {
     res.status(201).send(newProduct);
 });
 
+// actualiza un producto
 productsRouter.put("/:id", async (req, res) => {
     const { id } = req.params;
     const { title, description, code, price, stock, category, thumbnail, status } = req.body;
@@ -61,6 +65,7 @@ productsRouter.put("/:id", async (req, res) => {
     res.send(updatedProduct);
 });
 
+// elimina un producto
 productsRouter.delete("/:id", async (req, res) => {
     const { id } = req.params;
     const deletedProduct = await manager.deleteProduct(id);

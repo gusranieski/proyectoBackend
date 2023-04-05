@@ -63,7 +63,6 @@ export default class CartManager {
     }
 
     cart.products.splice(productIndex, 1);
-  
     await cart.save();
   
     // Recupera el carrito con los datos actualizados
@@ -71,6 +70,40 @@ export default class CartManager {
     return result;
   };
 
+  updateCart = async (cartId, products) => {
+    const cart = await cartModel.findById(cartId);
+  
+    if (!cart) {
+      console.log(`Error: cart with id ${cartId} not found`);
+      return;
+    }
+  
+    cart.products = products;
+    await cart.save();
+  
+    // Recupera el carrito con los datos actualizados
+    const result = await cartModel.findById(cartId);
+    return result;
+  };
+  
+  updateCartItemQuantity = async (cartId, productId, quantity) => {
+    try {
+      const cart = await cartModel.findById(cartId);
+      if (!cart) {
+        throw new Error("Cart not found");
+      }
+      const cartItem = cart.products.find((item) => item.idProduct._id.toString() === productId);
+      if (!cartItem) {
+        throw new Error("Product not found in cart");
+      }
+      cartItem.quantity = quantity;
+      await cart.save();
+      return cart;
+    } catch (error) {
+      throw error;
+    }
+  }
+  
   deleteCart = async (cartId) => {
     try {
       const deleted = await cartModel.findByIdAndDelete(cartId);

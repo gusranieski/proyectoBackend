@@ -7,16 +7,19 @@ const viewsRouter = Router();
 
 const manager = new ProductManager();
 
+// vista home
 viewsRouter.get("/", async (req, res) => {
   const products = await manager.getProducts();
   res.render("home", { products });
 });
 
+// vista real-time-products
 viewsRouter.get("/real-time-products", async (req, res) => {
   const products = await manager.getProducts();
   res.render("real_time_products", { products });
 });
 
+// vista products
 viewsRouter.get("/products", async(req, res) => {
   const { limit = 5, lean = true, page = 1 } = req.query;
   const options = { 
@@ -30,6 +33,7 @@ viewsRouter.get("/products", async(req, res) => {
   res.render("products", { paginatedProducts });
 });
 
+// vista carts
 viewsRouter.get("/carts/:cid", async(req, res) => {
   const { limit = 1, lean = true } = req.query;
   const options = { 
@@ -41,6 +45,5 @@ viewsRouter.get("/carts/:cid", async(req, res) => {
   
   res.render("carts", { paginatedCarts });
 });
-
 
 export default viewsRouter;
