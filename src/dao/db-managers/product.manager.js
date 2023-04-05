@@ -42,7 +42,6 @@ class ProductManager {
   }
     
   async updateProduct(id, updatedProduct) {
-    console.log(id);
     try {
       const updated = await productModel.findOneAndUpdate(
         { _id: id },

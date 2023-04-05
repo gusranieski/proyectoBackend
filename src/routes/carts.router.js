@@ -40,8 +40,8 @@ cartsRouter.get("/:cid", async (req, res) => {
 
 cartsRouter.post("/:cid/product/:id", async (req, res) => {
   try {
-    const  cartId = req.params.cid;
-    const  productId = req.params.id;
+    const cartId = req.params.cid;
+    const productId = req.params.id;
     const quantity = parseInt(req.body.quantity);
 
     const cart = await manager.addProductToCart(cartId, productId, quantity);
@@ -52,6 +52,22 @@ cartsRouter.post("/:cid/product/:id", async (req, res) => {
     res.status(500).json({ error: "Error al agregar el producto al carrito" });
   }
 });
+
+cartsRouter.delete("/:cid/product/:id", async (req, res) => {
+  const cartId = req.params.cid;
+  const productId = req.params.id;
+  const quantity = parseInt(req.body.quantity);
+
+  try {
+    const manager = new CartManager();
+    const updatedCart = await manager.removeProductFromCart(cartId, productId, quantity);
+    res.status(200).send({ status: "ok", payload: updatedCart });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ status: "error", payload: error.message });
+  }
+});
+
 
 cartsRouter.delete("/:cid", async (req, res) => {
   const { cid } = req.params;

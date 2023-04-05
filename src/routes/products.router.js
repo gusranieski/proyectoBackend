@@ -1,5 +1,6 @@
 import { Router, json } from "express";
 import { ProductManager } from "../dao/index.js";
+import productModel from "../dao/models/product.model.js";
 
 const productsRouter = Router();
 productsRouter.use(json());
@@ -7,19 +8,18 @@ productsRouter.use(json());
 const manager = new ProductManager();
 
 productsRouter.get("/", async(req, res) => {
-    const products = await manager.getProducts();
-    const {limit} = req.query
+    const { limit = 10, lean = true, page = 1, title, sort } = req.query;
+    const filter = title ? { title: { $regex: title, $options: "i" } } : {};
+    const options = { 
+      limit, 
+      lean, 
+      page,
+      sort: sort === 'asc' ? { price: 1 } : sort === 'desc' ? { price: -1 } : {},  
+    };
+    const paginatedProducts = await productModel.paginate( filter, options );
     
-        if (limit){
-            products.length = limit
-            return res.send(products)
-        } 
-    res.send(products);
+    res.status(200).send({ status: "ok", payload: paginatedProducts });
 });
-
-// paginates
-
-
 
 productsRouter.get("/:id", async(req, res) => {
     const { id } = req.params;

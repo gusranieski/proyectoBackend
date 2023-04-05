@@ -1,0 +1,27 @@
+{{#each paginatedProducts.docs}}
+  <div>
+    <span>Paginate:</span>
+    <ul>
+      <li>{{this.title}}</li>
+      <li>{{this.description}}</li>
+      <li>{{this.code}}</li>
+      <li>{{this.price}}</li>
+      <li>{{this.stock}}</li>
+      <li>{{this.category}}</li>
+      <li>{{this.thumbnail}}</li>
+      <li>{{this.status}}</li>
+      <li>{{this.id}}</li>
+    </ul>
+  </div>
+{{/each}}
+<div>
+  {{#if paginatedProducts.hasPrevPage}}
+    <a href="/products?page={{paginatedProducts.prevPage}}">Anterior</a>
+  {{/if}}
+
+  <span>Página {{paginatedProducts.page}} de {{paginatedProducts.totalPages}}</span>
+
+  {{#if paginatedProducts.hasNextPage}}
+    <a href="/products?page={{paginatedProducts.nextPage}}">Siguiente</a>
+  {{/if}}
+</div>

@@ -1,0 +1,22 @@
+{{#each paginatedCarts.docs}}
+  <div>
+    <div>
+    <span>Cart: {{_id}}</span>
+    </div>
+      {{#each this.products}}
+      <span>Product:</span>
+    <ul>
+        <li>ID: {{this.idProduct._id}}</li>
+        <li>Quantity: {{this.quantity}}</li>
+        <li>Title: {{this.idProduct.title}}</li>
+        <li>Description: {{this.idProduct.description}}</li>
+        <li>Code: {{this.idProduct.code}}</li>
+        <li>Price: {{this.idProduct.price}}</li>
+        <li>Stock: {{this.idProduct.stock}}</li>
+        <li>Category: {{this.idProduct.category}}</li>
+        <li>Thumbnail: {{this.idProduct.thumbnail}}</li>
+        <li>Status: {{this.idProduct.status}}</li>
+    </ul>
+      {{/each}}
+  </div>
+{{/each}}
