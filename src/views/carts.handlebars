@@ -1,10 +1,10 @@
 {{#each paginatedCarts.docs}}
   <div>
     <div>
-    <span>Cart: {{_id}}</span>
+    <h1>Cart: {{_id}}</h1>
     </div>
       {{#each this.products}}
-      <span>Product:</span>
+      <h2>Product:</h2>
     <ul>
         <li>ID: {{this.idProduct._id}}</li>
         <li>Quantity: {{this.quantity}}</li>

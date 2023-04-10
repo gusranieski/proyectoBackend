@@ -1,8 +1,10 @@
+<div>
+  <h1>Products:</h1>
+</div>
 {{#each paginatedProducts.docs}}
   <div>
-    <span>Paginate:</span>
+    <h2>{{this.title}}</h2>
     <ul>
-      <li>{{this.title}}</li>
       <li>{{this.description}}</li>
       <li>{{this.code}}</li>
       <li>{{this.price}}</li>
@@ -12,14 +14,21 @@
       <li>{{this.status}}</li>
       <li>{{this.id}}</li>
     </ul>
+    <div>
+      <button>Add to Cart</button>
+    </div>
   </div>
 {{/each}}
+
 <div>
   {{#if paginatedProducts.hasPrevPage}}
     <a href="/products?page={{paginatedProducts.prevPage}}">Anterior</a>
   {{/if}}
 
-  <span>Página {{paginatedProducts.page}} de {{paginatedProducts.totalPages}}</span>
+  <span>Página
+    {{paginatedProducts.page}}
+    de
+    {{paginatedProducts.totalPages}}</span>
 
   {{#if paginatedProducts.hasNextPage}}
     <a href="/products?page={{paginatedProducts.nextPage}}">Siguiente</a>
