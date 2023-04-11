@@ -29,8 +29,10 @@ viewsRouter.get("/products", async(req, res) => {
   };
 
   const paginatedProducts = await productModel.paginate( {}, options );
-  
-  res.render("products", { paginatedProducts });
+  // mensaje de bienvenida si hay un usuario autenticado
+  const userData = req.session.user ? { user: req.session.user } : null;
+
+  res.render("products", { paginatedProducts, userData });
 });
 
 // vista carts
@@ -44,6 +46,25 @@ viewsRouter.get("/carts/:cid", async(req, res) => {
   const paginatedCarts = await cartModel.paginate( {}, options );
   
   res.render("carts", { paginatedCarts });
+});
+
+// vista login
+viewsRouter.get("/login", (req, res) => {
+  res.render("login");
+});
+
+// vista signup
+viewsRouter.get("/signup", (req, res) => {
+  res.render("signup");
+});
+
+// vista profile
+viewsRouter.get("/profile", (req, res) => {
+  console.log(req.session);
+  const userData = req.session.user ? { user: req.session.user, rol: req.session.rol } : null;
+  console.log(userData);
+
+  res.render("profile", {userData});
 });
 
 export default viewsRouter;

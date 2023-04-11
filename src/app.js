@@ -2,12 +2,26 @@ import express from "express";
 import productsRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
 import viewsRouter from "./routes/views.router.js";
+import usersRouter from "./routes/users.router.js";
 import __dirname from "./utils.js";
 import { engine } from "express-handlebars";
 import { Server } from "socket.io";
 import mongoose from "mongoose";
+import session from "express-session";
+import MongoStore from "connect-mongo";
 
 const app = express();
+
+// Configuración de la session
+app.use(session({
+  store: MongoStore.create({
+    mongoUrl:"mongodb+srv://gustavoranieski:pistachO403613@coder-cluster-db.de6gzxv.mongodb.net/sessions?retryWrites=true&w=majority",
+    ttl:30
+  }),
+  secret:"claveSecreta",
+  resave:true,
+  saveUninitialized:true
+}))
 
 // Configuración de Mongoose
 mongoose
@@ -21,7 +35,7 @@ mongoose
 // Configuración express
 app.use(express.static(__dirname + "/public"));
 app.use(express.urlencoded({ extended: true }));
-// app.use(express.json());
+app.use(express.json());
 
 // Handlebars
 app.engine("handlebars", engine());
@@ -54,3 +68,4 @@ app.use((req, res, next) => {
 app.use("/", viewsRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
+app.use("/", usersRouter);

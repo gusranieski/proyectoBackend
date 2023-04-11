@@ -1,0 +1,11 @@
+<h1>Perfil:</h1>
+
+{{#if userData}}
+  <h2>Usuario: {{userData.user}}</h2>
+  <h2>Rol: {{userData.rol}}</h2>
+{{/if}}
+<div>
+  <form method="post" action="/logout">
+    <button type="submit">Logout!</button>
+  </form>
+</div>
