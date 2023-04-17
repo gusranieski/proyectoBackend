@@ -60,9 +60,7 @@ viewsRouter.get("/signup", (req, res) => {
 
 // vista profile
 viewsRouter.get("/profile", (req, res) => {
-  console.log(req.session);
   const userData = req.session.user ? { user: req.session.user, rol: req.session.rol } : null;
-  console.log(userData);
 
   res.render("profile", {userData});
 });
