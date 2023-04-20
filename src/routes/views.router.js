@@ -30,7 +30,7 @@ viewsRouter.get("/products", async(req, res) => {
 
   const paginatedProducts = await productModel.paginate( {}, options );
   // mensaje de bienvenida si hay un usuario autenticado
-  const userData = req.session.user ? { user: req.session.user } : null;
+  const userData = req.user ? { user: req.user.email, rol: req.user.rol } : null;
 
   res.render("products", { paginatedProducts, userData });
 });
@@ -60,7 +60,7 @@ viewsRouter.get("/signup", (req, res) => {
 
 // vista profile
 viewsRouter.get("/profile", (req, res) => {
-  const userData = req.session.user ? { user: req.session.user, rol: req.session.rol } : null;
+  const userData = req.user ? { user: req.user.email, rol: req.user.rol } : null;
 
   res.render("profile", {userData});
 });

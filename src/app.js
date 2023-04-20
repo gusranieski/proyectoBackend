@@ -9,6 +9,8 @@ import { Server } from "socket.io";
 import mongoose from "mongoose";
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import passport from "passport";
+import { initializedPassport } from "./config/passport.config.js";
 
 const app = express();
 
@@ -16,12 +18,17 @@ const app = express();
 app.use(session({
   store: MongoStore.create({
     mongoUrl:"mongodb+srv://gustavoranieski:pistachO403613@coder-cluster-db.de6gzxv.mongodb.net/sessions?retryWrites=true&w=majority",
-    ttl:30
+    ttl:60
   }),
   secret:"claveSecreta",
   resave:true,
   saveUninitialized:true
-}))
+}));
+
+// Configuración de passport
+initializedPassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Configuración de Mongoose
 mongoose
@@ -68,4 +75,4 @@ app.use((req, res, next) => {
 app.use("/", viewsRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
-app.use("/", usersRouter);
+app.use("/api/sessions", usersRouter);
