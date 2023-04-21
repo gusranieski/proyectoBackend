@@ -26,6 +26,15 @@ usersRouter.get("/failure-login", (req,res) => {
   res.status(401).send(`Usuario no registrado o contraseña incorrecta, <a href="/signup">registrarse</a>`);
 });
 
+// ruta de github
+usersRouter.get("/github", passport.authenticate("githubSignup"));
+
+usersRouter.get("/github-callback",passport.authenticate("githubSignup",{
+    failureRedirect:"/api/sessions/failure-signup"
+}),(req,res)=>{
+    res.send(`Usuario autenticado, <a href="/products">ir a productos</a>`)
+})
+
 // ruta del logout
 usersRouter.post("/logout",(req,res)=>{
   req.logOut(error=>{

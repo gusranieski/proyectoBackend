@@ -18,7 +18,7 @@ const app = express();
 app.use(session({
   store: MongoStore.create({
     mongoUrl:"mongodb+srv://gustavoranieski:pistachO403613@coder-cluster-db.de6gzxv.mongodb.net/sessions?retryWrites=true&w=majority",
-    ttl:60
+    ttl:300
   }),
   secret:"claveSecreta",
   resave:true,
