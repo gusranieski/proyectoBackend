@@ -49,4 +49,12 @@ usersRouter.post("/logout",(req,res)=>{
   })
 });
 
+// ruta current
+usersRouter.get("/current", (req, res) => {
+  if (req.user) {
+    return res.send({ userInfo: req.user });
+  }
+  res.send("Usuario no logueado");
+});
+
 export default usersRouter;
