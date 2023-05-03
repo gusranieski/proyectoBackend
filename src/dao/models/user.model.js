@@ -28,6 +28,11 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+// middleware
+userSchema.pre(["findOne", "find"], function () {
+  this.populate("cart");
+});
+
 const userModel = mongoose.model(userCollection, userSchema);
 
 export default userModel;

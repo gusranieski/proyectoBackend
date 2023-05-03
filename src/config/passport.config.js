@@ -29,6 +29,7 @@ const initializedPassport = () => {
                     age,
                     email: username,
                     password: createHash(password),
+                    cart: null,
                     role: role
                 };
                 const newUserCreated = await userModel.create(newUser);
@@ -75,7 +76,6 @@ const initializedPassport = () => {
         },
         async(accessToken, refreshToken, profile, done)=>{
             try {
-                console.log("profile", profile)
                 const userExists = await userModel.findOne({email:profile.username});
                 if(userExists) {
                     return done(null, userExists)
