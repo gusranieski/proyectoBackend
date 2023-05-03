@@ -13,19 +13,23 @@ const initializedPassport = () => {
         },
         async (req, username, password, done) => {
             try {
+                const {first_name, last_name,age}= req.body
                 const user = await userModel.findOne({ email: username });
                 if (user) {
                     return done(null, false);
                 }
-                let rol = "usuario";
+                let role = "usuario";
                 if (username.endsWith("@coder.com")) {
-                    rol = "admin";
+                    role = "admin";
                 }
                 // si no existe el usuario se crea
                 const newUser = {
+                    first_name,
+                    last_name,
+                    age,
                     email: username,
                     password: createHash(password),
-                    rol: rol
+                    role: role
                 };
                 const newUserCreated = await userModel.create(newUser);
                 return done(null, newUserCreated); 
@@ -50,11 +54,11 @@ const initializedPassport = () => {
                 if (!isValidPassword(user, password)) {
                     return done(null, false);
                 }
-                let rol = "usuario";
+                let role = "usuario";
                 if (username.password ===password) {
-                    rol = "admin";
+                    role = "admin";
                 }
-                user.rol = rol;
+                user.role = role;
                 return done(null, user);
             } catch (error) {
                 return done(error);
