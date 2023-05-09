@@ -11,16 +11,21 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import passport from "passport";
 import { initializedPassport } from "./config/passport.config.js";
+import { options } from "./config/config.js";
 
 const app = express();
+// Variables de entorno
+const mongoUrl = options.mongo.url;
+const mongoSecret = options.server.secretSession;
+const port = options.server.port;
 
 // Configuración de la session
 app.use(session({
   store: MongoStore.create({
-    mongoUrl:"mongodb+srv://gustavoranieski:pistachO403613@coder-cluster-db.de6gzxv.mongodb.net/sessions?retryWrites=true&w=majority",
+    mongoUrl: mongoUrl,
     ttl:300
   }),
-  secret:"claveSecreta",
+  secret:mongoSecret,
   resave:true,
   saveUninitialized:true
 }));
@@ -32,9 +37,7 @@ app.use(passport.session());
 
 // Configuración de Mongoose
 mongoose
-  .connect(
-    "mongodb+srv://gustavoranieski:pistachO403613@coder-cluster-db.de6gzxv.mongodb.net/ecommerce?retryWrites=true&w=majority"
-  )
+  .connect(mongoUrl)
   .then((conn) => {
     console.log("Connected to DB!");
   });
@@ -50,8 +53,8 @@ app.set("view engine", "handlebars");
 app.set("views", __dirname + "/views");
 
 // Configuración de socket.io
-const httpServer = app.listen(8080, () => {
-  console.log("Server listening on port 8080");
+const httpServer = app.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
 });
 
 const io = new Server(httpServer);
