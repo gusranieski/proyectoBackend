@@ -1,60 +1,26 @@
 import { Router, json } from "express";
-import passport from "passport";
+import { passportSignupController, productsRedirectController, passportFailSignup, passportLoginController, passportFailLogin, signupGithubController, signupGithubCallbackController, logoutController, currentUserController } from "../controllers/users.controller.js";
 
 const usersRouter = Router();
+
 usersRouter.use(json());
 
 // ruta del registro
-usersRouter.post("/signup", passport.authenticate("register",{
-  failureRedirect: "/api/sessions/failure-signup"
-}),(req,res) =>{
-  res.status(200).redirect("/products");
-});
-
-usersRouter.get("/failure-signup", (req,res) => {
-  res.status(401).send(`Usuario no registrado o contraseña incorrecta, <a href="/signup">registrarse</a>`);
-})
+usersRouter.post("/signup", passportSignupController, productsRedirectController);
+usersRouter.get("/failure-signup", passportFailSignup);
 
 // ruta del login
-usersRouter.post("/login", passport.authenticate("login", {
-  failureRedirect: "/api/sessions/failure-login",
-}), (req, res) => {
-  res.status(200).redirect("/products");
-});
-
-usersRouter.get("/failure-login", (req,res) => {
-  res.status(401).send(`Usuario no registrado o contraseña incorrecta, <a href="/signup">registrarse</a>`);
-});
+usersRouter.post("/login", passportLoginController, productsRedirectController);
+usersRouter.get("/failure-login", passportFailLogin);
 
 // ruta de github
-usersRouter.get("/github", passport.authenticate("githubSignup"));
-
-usersRouter.get("/github-callback",passport.authenticate("githubSignup",{
-    failureRedirect:"/api/sessions/failure-signup"
-}),(req,res)=>{
-    res.send(`Usuario autenticado, <a href="/products">ir a productos</a>`)
-})
+usersRouter.get("/github", signupGithubController);
+usersRouter.get("/github-callback", signupGithubCallbackController, productsRedirectController);
 
 // ruta del logout
-usersRouter.post("/logout",(req,res)=>{
-  req.logOut(error=>{
-      if(error){
-          return res.status(500).send("No se pudo cerrar la sesión");
-      }else {
-          req.session.destroy(error=>{
-              if(error) return res.status(500).send("No se pudo cerrar la sesión");
-              res.status(200).send(`Sesión finalizada correctamente, <a href="/login">volver a iniciar sesión</a>`)
-          })
-      }
-  })
-});
+usersRouter.post("/logout", logoutController);
 
 // ruta current
-usersRouter.get("/current", (req, res) => {
-  if (req.user) {
-    return res.send({ userInfo: req.user });
-  }
-  res.send("Usuario no logueado");
-});
+usersRouter.get("/current", currentUserController);
 
 export default usersRouter;

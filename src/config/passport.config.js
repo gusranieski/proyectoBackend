@@ -3,9 +3,11 @@ import LocalStrategy from "passport-local";
 import GithubStrategy from "passport-github2";
 import userModel from "../dao/models/user.model.js";
 import { createHash, isValidPassword } from "../utils.js";
+import { options } from "./config.js";
+
 
 const initializedPassport = () => {
-//Estrategia de regristro de usuario
+    //Estrategia de regristro de usuario
     passport.use("register", new LocalStrategy(
         {
             usernameField: "email",
@@ -68,29 +70,29 @@ const initializedPassport = () => {
     ));
 
 //Estrategia de autenticación con github
-    passport.use("githubSignup", new GithubStrategy(
-        {
-            clientID: "Iv1.6b20084cfd0ef34e",
-            clientSecret: "b28406e0c29d430c0b18eccf5ef2c1fd1195f1d1",
-            callbackURL: "http://localhost:8080/api/sessions/github-callback"
-        },
-        async(accessToken, refreshToken, profile, done)=>{
-            try {
-                const userExists = await userModel.findOne({email:profile.username});
-                if(userExists) {
-                    return done(null, userExists)
-                }
-                const newUser = {
-                    email: profile.username,
-                    password: createHash(profile.id)
-                };
-                const newUserCreated = await userModel.create(newUser);
-                return done(null, newUserCreated)
-            } catch (error) {
-                return done(error)
+passport.use("githubSignup", new GithubStrategy(
+    {
+        clientID: options.github.clientID,
+        clientSecret: options.github.clientSecret,
+        callbackURL: options.github.callbackURL,
+    },
+    async(accessToken, refreshToken, profile, done)=>{
+        try {
+            const userExists = await userModel.findOne({email:profile.username});
+            if(userExists) {
+                return done(null, userExists)
             }
+            const newUser = {
+                email: profile.username,
+                password: createHash(profile.id)
+            };
+            const newUserCreated = await userModel.create(newUser);
+            return done(null, newUserCreated)
+        } catch (error) {
+            return done(error)
         }
-    ))
+    }
+));
 
     passport.serializeUser((user, done) => {
         done(null, user._id);
@@ -107,8 +109,3 @@ const initializedPassport = () => {
 };
 
 export { initializedPassport };
-
-
-
-// email = adminCoder@coder.com 
-// password = adminCod3r123 
