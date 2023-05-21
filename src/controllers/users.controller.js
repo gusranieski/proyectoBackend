@@ -5,7 +5,8 @@ export const passportSignupController = passport.authenticate("register", {
 });
 
 export const productsRedirectController = (req, res) => {
-  res.status(200).redirect("/products");
+  // res.status(200).redirect("/products");
+  res.send("login exitoso")
 };
 
 export const passportFailSignup = (req, res) => {

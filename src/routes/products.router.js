@@ -1,5 +1,6 @@
 import { Router, json } from "express";
 import { productsController } from "../controllers/products.controller.js";
+import { checkRole } from "../middlewares/auth.js";
 
 const productsRouter = Router();
 
@@ -7,8 +8,8 @@ productsRouter.use(json());
 
 productsRouter.get("/", productsController.getAllProducts);
 productsRouter.get("/:id", productsController.getProductById);
-productsRouter.post("/", productsController.addProduct);
-productsRouter.put("/:id", productsController.updateProduct);
-productsRouter.delete("/:id", productsController.deleteProduct);
+productsRouter.post("/", checkRole(["admin"]), productsController.addProduct);
+productsRouter.put("/:id", checkRole(["admin"]), productsController.updateProduct);
+productsRouter.delete("/:id", checkRole(["admin"]), productsController.deleteProduct);
 
 export default productsRouter;

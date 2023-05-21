@@ -5,6 +5,8 @@ import userModel from "../dao/models/user.model.js";
 import { createHash, isValidPassword } from "../utils.js";
 import { options } from "./config.js";
 
+const adminUser = options.auth.account
+const adminPass = options.auth.pass
 
 const initializedPassport = () => {
     //Estrategia de regristro de usuario
@@ -21,7 +23,7 @@ const initializedPassport = () => {
                     return done(null, false);
                 }
                 let role = "usuario";
-                if (username.endsWith("@coder.com")) {
+                if (username === adminUser && password === adminPass) {
                     role = "admin";
                 }
                 // si no existe el usuario se crea
@@ -58,7 +60,7 @@ const initializedPassport = () => {
                     return done(null, false);
                 }
                 let role = "usuario";
-                if (username.password ===password) {
+                if (username.password === password) {
                     role = "admin";
                 }
                 user.role = role;

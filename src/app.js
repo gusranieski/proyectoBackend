@@ -6,12 +6,12 @@ import usersRouter from "./routes/users.router.js";
 import __dirname from "./utils.js";
 import { engine } from "express-handlebars";
 import { Server } from "socket.io";
-import mongoose from "mongoose";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import passport from "passport";
 import { initializedPassport } from "./config/passport.config.js";
 import { options } from "./config/config.js";
+import { connectDB } from "./config/dbConnection.js";
 
 const app = express();
 // Variables de entorno
@@ -36,12 +36,12 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Configuración de Mongoose
-mongoose
-  .connect(mongoUrl)
-  .then((conn) => {
-    console.log("Connected to DB!");
-  });
-
+connectDB();
+// mongoose
+//   .connect(mongoUrl)
+//   .then((conn) => {
+//     console.log("Connected to DB!");
+//   });
 // Configuración express
 app.use(express.static(__dirname + "/public"));
 app.use(express.urlencoded({ extended: true }));

@@ -9,6 +9,8 @@ const MONGO_DB = process.env.MONGO_DB;
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
 const GITHUB_CALLBACK_URL = process.env.GITHUB_CALLBACK_URL;
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 export const options = {
   server: {
@@ -23,4 +25,8 @@ export const options = {
     clientSecret: GITHUB_CLIENT_SECRET,
     callbackURL: GITHUB_CALLBACK_URL,
   },
+  auth: {
+    account: ADMIN_EMAIL,
+    pass: ADMIN_PASSWORD,
+  }
 };
