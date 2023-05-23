@@ -1,11 +1,12 @@
-import { CartManager } from "../dao/index.js";
+// import { CartManager } from "../dao/index.js";
+import { CartManager } from "../dao/factory.js";
 
-const manager = new CartManager();
+// const manager = new CartManager();
 
 export const cartsController = {
   async getCarts(req, res) {
     try {
-      const carts = await manager.getCarts();
+      const carts = await CartManager.getCarts();
       res.send(carts);
     } catch (error) {
       console.error(error);
@@ -16,7 +17,7 @@ export const cartsController = {
   async addCart(req, res) {
     try {
       const products = req.body;
-      const newCart = await manager.addCart(products);
+      const newCart = await CartManager.addCart(products);
       res.status(201).json(newCart);
     } catch (error) {
       console.error(error);
@@ -26,7 +27,7 @@ export const cartsController = {
 
   async getCartById(req, res) {
     const { cid } = req.params;
-    const cart = await manager.getCartById(cid);
+    const cart = await CartManager.getCartById(cid);
     if (!cart) {
       return res
         .status(404)
@@ -41,7 +42,7 @@ export const cartsController = {
       const productId = req.params.id;
       const quantity = parseInt(req.body.quantity);
 
-      const cart = await manager.addProductToCart(cartId, productId, quantity);
+      const cart = await CartManager.addProductToCart(cartId, productId, quantity);
 
       return res.status(200).json(cart);
     } catch (error) {
@@ -58,7 +59,7 @@ export const cartsController = {
     const quantity = parseInt(req.body.quantity);
 
     try {
-      const updatedCart = await manager.removeProductFromCart(
+      const updatedCart = await CartManager.removeProductFromCart(
         cartId,
         productId,
         quantity
@@ -75,7 +76,7 @@ export const cartsController = {
       const cartId = req.params.cid;
       const products = req.body;
 
-      const updatedCart = await manager.updateCart(cartId, products);
+      const updatedCart = await CartManager.updateCart(cartId, products);
 
       return res.status(200).json(updatedCart);
     } catch (error) {
@@ -90,7 +91,7 @@ export const cartsController = {
       const productId = req.params.id;
       const quantity = parseInt(req.body.quantity);
 
-      const updatedCart = await manager.updateCartItemQuantity(
+      const updatedCart = await CartManager.updateCartItemQuantity(
         cartId,
         productId,
         quantity
@@ -105,7 +106,7 @@ export const cartsController = {
 
   async deleteCart(req, res) {
     const { cid } = req.params;
-    const deletedCart = await manager.deleteCart(cid);
+    const deletedCart = await CartManager.deleteCart(cid);
 
     if (!deletedCart) {
       return res
@@ -121,10 +122,10 @@ export const cartsController = {
   async getPurchase(req, res) {
     try {
       const { cid } = req.params;
-      const cart = await manager.getCartById(cid);
+      const cart = await CartManager.getCartById(cid);
 
       if (cart) {
-        const purchaseResult = await manager.getTicket(cart, req.user.email);
+        const purchaseResult = await CartManager.getTicket(cart, req.user.email);
 
         res.send(purchaseResult);
       } else {

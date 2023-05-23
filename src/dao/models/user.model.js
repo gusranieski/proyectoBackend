@@ -4,8 +4,14 @@ import { cartCollection } from "./cart.model.js";
 const userCollection = "users";
 
 const userSchema = new mongoose.Schema({
-  first_name: String,
-  last_name: String,
+  first_name: {
+    type: String,
+    required: true,
+  },
+  last_name: {
+    type: String,
+    required: true,
+  },
   age: Number,
   email: {
     type: String,

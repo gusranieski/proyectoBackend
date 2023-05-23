@@ -11,11 +11,13 @@ const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
 const GITHUB_CALLBACK_URL = process.env.GITHUB_CALLBACK_URL;
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+const PERSISTENCE= process.env.PERSISTENCE
 
 export const options = {
   server: {
     port: PORT,
     secretSession: SECRET_SESSION,
+    persistence: PERSISTENCE
   },
   mongo: {
     url: `mongodb+srv://${MONGO_USER}:${MONGO_PASS}@coder-cluster-db.de6gzxv.mongodb.net/${MONGO_DB}?retryWrites=true&w=majority`,
@@ -23,10 +25,10 @@ export const options = {
   github: {
     clientID: GITHUB_CLIENT_ID,
     clientSecret: GITHUB_CLIENT_SECRET,
-    callbackURL: GITHUB_CALLBACK_URL,
+    callbackURL: GITHUB_CALLBACK_URL
   },
   auth: {
     account: ADMIN_EMAIL,
-    pass: ADMIN_PASSWORD,
+    pass: ADMIN_PASSWORD
   }
 };

@@ -4,11 +4,12 @@ import { getNextId } from "./utils.js";
 
 const path = __dirname + "/dao/file-managers/files/products.json";
 
-class ProductManager {
+export class ProductManagerMemory {
   #path;
 
   constructor() {
     this.#path = path;
+    console.log("Using the Filesystem Database");
   }
 
   // OBTIENE LA LISTA DE PRODUCTOS
@@ -103,5 +104,3 @@ class ProductManager {
     }
   }
 }
-
-export default ProductManager;

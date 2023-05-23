@@ -1,16 +1,17 @@
-import { ProductManager } from "../dao/index.js";
+// import { ProductManager } from "../dao/index.js";
+import { ProductManager } from "../dao/factory.js";
 import productModel from "../dao/models/product.model.js";
 import cartModel from "../dao/models/cart.model.js";
 
-const manager = new ProductManager();
+// const manager = new ProductManager();
 
 export const renderHome = async (req, res) => {
-  const products = await manager.getProducts();
+  const products = await ProductManager.getProducts();
   res.render("home", { products });
 };
 
 export const renderRealTimeProducts = async (req, res) => {
-  const products = await manager.getProducts();
+  const products = await ProductManager.getProducts();
   res.render("real_time_products", { products });
 };
 

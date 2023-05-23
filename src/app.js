@@ -11,13 +11,13 @@ import MongoStore from "connect-mongo";
 import passport from "passport";
 import { initializedPassport } from "./config/passport.config.js";
 import { options } from "./config/config.js";
-import { connectDB } from "./config/dbConnection.js";
 
 const app = express();
+
 // Variables de entorno
 const mongoUrl = options.mongo.url;
 const mongoSecret = options.server.secretSession;
-const port = options.server.port;
+const port = options.server.port || 8080;
 
 // Configuración de la session
 app.use(session({
@@ -35,13 +35,6 @@ initializedPassport();
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Configuración de Mongoose
-connectDB();
-// mongoose
-//   .connect(mongoUrl)
-//   .then((conn) => {
-//     console.log("Connected to DB!");
-//   });
 // Configuración express
 app.use(express.static(__dirname + "/public"));
 app.use(express.urlencoded({ extended: true }));

@@ -4,12 +4,13 @@ import { getNextId } from "./utils.js";
 
 const path = __dirname + "/dao/file-managers/files/carts.json";
 
-class CartManager {
+export class CartManagerMemory {
   static id = 0;
   #path;
 
   constructor() {
     this.#path = path;
+    console.log("Using the Filesystem Database");
   }
 
   // OBTIENE EL ARRAY DE CARTS
@@ -87,5 +88,3 @@ class CartManager {
     }
   }
 }
-
-export default CartManager;

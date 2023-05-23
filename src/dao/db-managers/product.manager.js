@@ -1,7 +1,9 @@
 import productModel from "../models/product.model.js";
 
-class ProductManager {
-  constructor() {}
+export class ProductManagerMongo {
+  constructor() {
+    console.log("Using the MongoDB Database");
+  }
 
   async getProducts() {
     try {
@@ -66,4 +68,4 @@ class ProductManager {
   }
 }
 
-export default ProductManager;
+// export default ProductManagerMongo;

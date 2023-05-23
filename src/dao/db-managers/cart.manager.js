@@ -2,9 +2,11 @@ import cartModel from "../models/cart.model.js";
 import productModel from "../models/product.model.js";
 import { ticketsModel } from "../models/ticket.model.js";
 import {v4 as uuidv4} from 'uuid';
-import ProductManager from "./product.manager.js";
-export default class CartManager {
-  constructor() {}
+import { ProductManagerMongo } from "./product.manager.js";
+export class CartManagerMongo {
+  constructor() {
+    console.log("Using the MongoDB Database");
+  }
 
   getCarts = async () => {
     const carts = await cartModel.find().lean();
@@ -119,7 +121,7 @@ export default class CartManager {
 
   getTicket = async (cart, userEmail) => {
     try {
-      const managerProd = new ProductManager();
+      const managerProd = new ProductManagerMongo();
 
       if(!cart.products.length) {
         return { message: "No tenés productos en tu carrito, agregá algún producto" };
