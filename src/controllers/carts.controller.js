@@ -58,7 +58,6 @@ export const cartsController = {
     const quantity = parseInt(req.body.quantity);
 
     try {
-      const manager = new CartManager();
       const updatedCart = await manager.removeProductFromCart(
         cartId,
         productId,
@@ -117,5 +116,23 @@ export const cartsController = {
       message: `Carrito con id ${cid} eliminado correctamente`,
       carts: deletedCart,
     });
+  },
+
+  async getPurchase(req, res) {
+    try {
+      const { cid } = req.params;
+      const cart = await manager.getCartById(cid);
+
+      if (cart) {
+        const purchaseResult = await manager.getTicket(cart, req.user.email);
+
+        res.send(purchaseResult);
+      } else {
+        res.send("El carrito no se encuentra");
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Error al cargar la compra" });
+    }
   },
 };

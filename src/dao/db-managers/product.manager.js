@@ -33,7 +33,7 @@ class ProductManager {
 
   async getProductById(id) {
     try {
-      const product = await productModel.findById(id).lean();
+      const product = await productModel.findById(id);
       return product;
     } catch (error) {
       console.error(error);
@@ -47,7 +47,7 @@ class ProductManager {
         { _id: id },
         updatedProduct,
         { new: true }
-      ).lean();
+      );
       return updated;
     } catch (error) {
       console.error(error);
