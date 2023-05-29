@@ -4,9 +4,7 @@ import { ticketsModel } from "../models/ticket.model.js";
 import {v4 as uuidv4} from 'uuid';
 import { ProductManagerMongo } from "./product.manager.js";
 export class CartManagerMongo {
-  constructor() {
-    console.log("Using the MongoDB Database");
-  }
+  constructor() {}
 
   getCarts = async () => {
     const carts = await cartModel.find().lean();

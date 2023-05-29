@@ -1,5 +1,18 @@
 import { Router, json } from "express";
-import { passportSignupController, productsRedirectController, passportFailSignup, passportLoginController, passportFailLogin, signupGithubController, signupGithubCallbackController, logoutController, currentUserController } from "../controllers/users.controller.js";
+import { 
+    passportSignupController, 
+    productsRedirectController, 
+    passportFailSignup, 
+    passportLoginController, 
+    passportFailLogin, 
+    signupGithubController, 
+    signupGithubCallbackController, 
+    logoutController, 
+    currentUserController, 
+    allUsersController, 
+    mailUserController,
+    smsUserController 
+} from "../controllers/users.controller.js";
 
 const usersRouter = Router();
 
@@ -22,5 +35,14 @@ usersRouter.post("/logout", logoutController);
 
 // ruta current
 usersRouter.get("/current", currentUserController);
+
+// ruta todos los users
+usersRouter.get("/", allUsersController);
+
+// ruta mail
+usersRouter.post("/mail", mailUserController);
+
+// ruta sms
+usersRouter.post("/sms", smsUserController);
 
 export default usersRouter;

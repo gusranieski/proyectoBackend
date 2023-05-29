@@ -10,7 +10,6 @@ export class CartManagerMemory {
 
   constructor() {
     this.#path = path;
-    console.log("Using the Filesystem Database");
   }
 
   // OBTIENE EL ARRAY DE CARTS

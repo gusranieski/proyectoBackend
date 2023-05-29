@@ -6,17 +6,17 @@ export class CreateUserDto {
     this.email = user.email;
     this.password = user.password;
     this.full_name = `${user.first_name} ${user.last_name}`;
-    this.rol = user.rol;
+    this.role = user.role;
     this.cart = user.cart;
   }
 }
 
 export class GetUserDto {
   constructor(userDB) {
-    this.full_Name = userDB.full_Name;
+    this.full_name = `${userDB.first_name} ${userDB.last_name}`;
     this.age = userDB.age;
     this.email = userDB.email;
-    this.rol = userDB.rol;
+    this.role = userDB.role;
     this.cart = userDB.cart;
   }
 }

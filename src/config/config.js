@@ -11,7 +11,14 @@ const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
 const GITHUB_CALLBACK_URL = process.env.GITHUB_CALLBACK_URL;
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
-const PERSISTENCE= process.env.PERSISTENCE
+const PERSISTENCE= process.env.PERSISTENCE;
+
+const ADMIN_EMAIL_GMAIL = process.env.ADMIN_EMAIL_GMAIL;
+const ADMIN_PASSWORD_GMAIL = process.env.ADMIN_PASSWORD_GMAIL;
+
+const TWILIO_SID = process.env.TWILIO_SID;
+const TWILIO_TOKEN = process.env.TWILIO_TOKEN;
+const TWILIO_SMS_PHONE = process.env.TWILIO_SMS_PHONE;
 
 export const options = {
   server: {
@@ -30,5 +37,14 @@ export const options = {
   auth: {
     account: ADMIN_EMAIL,
     pass: ADMIN_PASSWORD
+  },
+  gmail: {
+    adminEmail: ADMIN_EMAIL_GMAIL,
+    adminPassword: ADMIN_PASSWORD_GMAIL
+  },
+  twilio: {
+    twilioId: TWILIO_SID,
+    twilioToken: TWILIO_TOKEN,
+    twilioPhone: TWILIO_SMS_PHONE
   }
 };

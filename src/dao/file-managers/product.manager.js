@@ -9,7 +9,6 @@ export class ProductManagerMemory {
 
   constructor() {
     this.#path = path;
-    console.log("Using the Filesystem Database");
   }
 
   // OBTIENE LA LISTA DE PRODUCTOS
