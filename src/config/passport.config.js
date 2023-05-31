@@ -4,6 +4,9 @@ import GithubStrategy from "passport-github2";
 import userModel from "../dao/models/user.model.js";
 import { createHash, isValidPassword } from "../utils.js";
 import { options } from "./config.js";
+import { CustomError } from "../services/customError.js";
+import { EError } from "../enums/EError.js";
+import { generateUserErrorInfo } from "../services/userErrorInfo.js";
 
 const adminUser = options.auth.account
 const adminPass = options.auth.pass
@@ -17,7 +20,15 @@ const initializedPassport = () => {
         },
         async (req, username, password, done) => {
             try {
-                const {first_name, last_name,age}= req.body
+                const {first_name, last_name, age}= req.body
+                if(!first_name || !last_name || !age) {
+                    CustomError.createError({
+                        name: "User create error",
+                        cause:generateUserErrorInfo(req.body),
+                        message: "Error creando el usuario",
+                        errorCode: EError.INVALID_JSON
+                    });
+                };
                 const user = await userModel.findOne({ email: username });
                 if (user) {
                     return done(null, false);

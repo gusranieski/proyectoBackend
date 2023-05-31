@@ -12,6 +12,7 @@ import MongoStore from "connect-mongo";
 import passport from "passport";
 import { initializedPassport } from "./config/passport.config.js";
 import { options } from "./config/config.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
 
 const app = express();
 
@@ -74,3 +75,4 @@ app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/sessions", usersRouter);
 app.use("/mockingproducts", mocksProductsRouter);
+app.use(errorHandler);
