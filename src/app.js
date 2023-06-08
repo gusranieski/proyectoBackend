@@ -13,6 +13,8 @@ import passport from "passport";
 import { initializedPassport } from "./config/passport.config.js";
 import { options } from "./config/config.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
+import { addLogger } from "./loggers/logger.js";
+import loggerRouter from "./routes/logger.router.js";
 
 const app = express();
 
@@ -22,15 +24,17 @@ const mongoSecret = options.server.secretSession;
 const port = options.server.port || 8080;
 
 // Configuración de la session
-app.use(session({
-  store: MongoStore.create({
-    mongoUrl: mongoUrl,
-    ttl:300
-  }),
-  secret:mongoSecret,
-  resave:true,
-  saveUninitialized:true
-}));
+app.use(
+  session({
+    store: MongoStore.create({
+      mongoUrl: mongoUrl,
+      ttl: 300,
+    }),
+    secret: mongoSecret,
+    resave: true,
+    saveUninitialized: true,
+  })
+);
 
 // Configuración de passport
 initializedPassport();
@@ -68,6 +72,10 @@ app.use((req, res, next) => {
   req.io = io;
   next();
 });
+
+// Winston Logger
+app.use(addLogger);
+app.use("/loggertest", loggerRouter);
 
 // Rutas
 app.use("/", viewsRouter);

@@ -27,6 +27,9 @@ export const renderProducts = async (req, res) => {
   // mensaje de bienvenida si hay un usuario autenticado
   const userData = req.user ? { user: req.user.email, role: req.user.role } : null;
 
+  req.logger.debug("Prueba de Winston en products");
+  res.send("Prueba de Winston");
+
   res.render("products", { paginatedProducts, userData });
 };
 
