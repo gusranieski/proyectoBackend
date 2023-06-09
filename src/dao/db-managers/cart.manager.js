@@ -20,11 +20,11 @@ export class CartManagerMongo {
   };
 
   getCartById = async (id) => {
-    const cart = await cartModel.findById(id);
-    if (!cart) {
-      console.log("Not Found");
-    } else {
+    try {
+      const cart = await cartModel.findById(id);
       return cart;
+    } catch (error) {
+      throw error;
     }
   };
 

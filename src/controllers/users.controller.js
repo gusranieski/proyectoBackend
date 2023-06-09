@@ -8,12 +8,12 @@ export const passportSignupController = passport.authenticate("register", {
 });
 
 export const productsRedirectController = (req, res) => {
-  res.status(200)
-  // .redirect("/products");
-  .send("login exitoso");
+  res.status(200).redirect("/products");
+  req.logger.info("login exitoso");
 };
 
 export const passportFailSignup = (req, res) => {
+  req.logger.error("registro inválido");
   res.status(401).send(`Usuario no registrado o contraseña incorrecta, <a href="/signup">registrarse</a>`);
 };
 
@@ -22,6 +22,7 @@ export const passportLoginController = passport.authenticate("login", {
 });
 
 export const passportFailLogin = (req, res) => {
+  req.logger.error("login inválido");
   res.status(401).send(`Usuario no registrado o contraseña incorrecta, <a href="/signup">registrarse</a>`);
 };
 
@@ -37,7 +38,10 @@ export const logoutController = (req, res) => {
       return res.status(500).send("No se pudo cerrar la sesión");
     } else {
       req.session.destroy((error) => {
-        if (error) return res.status(500).send("No se pudo cerrar la sesión");
+        if (error) {
+          return res.status(500).send("No se pudo cerrar la sesión");
+        }
+        req.logger.info("Sesión finalizada correctamente");
         res.status(200).send(`Sesión finalizada correctamente, <a href="/login">volver a iniciar sesión</a>`);
       });
     }
@@ -53,6 +57,7 @@ export const currentUserController = async (req, res) => {
       res.status(500).send("Error al obtener el usuario actual");
     }
   } else {
+    req.logger.info("Usuario no logueado");
     res.send("Usuario no logueado, inicia sesión para acceder");
   }
 };
@@ -66,6 +71,7 @@ export const allUsersController = async (req, res) => {
       res.status(500).send("Error al obtener todos los usuarios");
     }
   } else {
+    req.logger.info("Usuario no logueado");
     res.send("Usuario no logueado, inicia sesión para acceder");
   }
 };

@@ -46,13 +46,13 @@ export const productsController = {
       const product = await ProductManager.getProductById(id);
   
       if (!product) {
-        return res
-          .status(404)
-          .send({ error: `No existe el producto con id: ${req.params.id}` });
+        req.logger.error(`No existe el producto con id: ${req.params.id}`);
+        return res.status(404).send({ error: `No existe el producto con id: ${req.params.id}` });
       }
   
       res.send(product);
     } catch (error) {
+      req.logger.error("Error al obtener el producto por ID");
       res.status(500);
       errorHandler(error, req, res);
     }
@@ -63,6 +63,7 @@ export const productsController = {
     try {
       const { title, description, code, price, stock, category, thumbnail, status } = req.body;
       if (!title || !description || !code || !price || !stock) {
+        req.logger.warning("campos incompletos o parámetros mal ingresados");
         CustomError.createError({
           name: "Product create error",
           cause: generateProductErrorInfo(req.body),
@@ -80,6 +81,7 @@ export const productsController = {
     req.io.emit("new-product", newProduct);
     res.status(201).send({ status: "succes", payload: newProduct });    
     } catch (error) {
+      req.logger.error("Error al agregar el producto");
       res.status(500);
       errorHandler(error, req, res);
     }
@@ -90,6 +92,7 @@ export const productsController = {
       const { id } = req.params;
       const { title, description, code, price, stock, category, thumbnail, status } = req.body;
       if (!title || !description || !code || !price || !stock) {
+        req.logger.error("Campos incompletos o parámetros mal ingresados");
         CustomError.createError({
             name: "Product update error",
             cause: updateProductErrorInfo(req.body),
@@ -101,13 +104,12 @@ export const productsController = {
       const updatedProduct = await ProductManager.updateProduct(id, { title, description, code, price: parseInt(price), stock: parseInt(stock), category, thumbnail, status });
   
       if (!updatedProduct) {
-        return res
-          .status(404)
-          .send({ error: `No existe el producto con id: ${id}` });
+        return res.status(404).send({ error: `No existe el producto con id: ${id}` });
       }
 
       res.status(201).send({ status: "succes", payload: updatedProduct });
     } catch (error) {
+      req.logger.error("Error al actualizar el producto");
       res.status(500);
       errorHandler(error, req, res);
     }
@@ -130,14 +132,14 @@ export const productsController = {
       const deletedProduct = await ProductManager.deleteProduct(id);
   
       if (!deletedProduct) {
-        return res
-          .status(404)
-          .send({ error: `No existe el producto con id: ${id}` });
+        req.logger.warning(`No existe el producto con id: ${id}`);
+        return res.status(404).send({ error: `No existe el producto con id: ${id}` });
       }
       
       req.io.emit("delete-product", deletedProduct);
       res.send({ message: `Producto con id ${id} eliminado correctamente`, products: deletedProduct });
     } catch (error) {
+      req.logger.error("Error al eliminar el producto");
       res.status(500);
       errorHandler(error, req, res);
     }

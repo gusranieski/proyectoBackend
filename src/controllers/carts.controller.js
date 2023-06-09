@@ -15,7 +15,7 @@ export const cartsController = {
       const carts = await CartManager.getCarts();
       res.send(carts);
     } catch (error) {
-      console.error(error);
+      req.logger.error(error);
       res.status(500).json({ error: "Error al obtener los carritos" });
     }
   },
@@ -27,7 +27,7 @@ export const cartsController = {
       const newCart = await CartManager.addCart(products);
       res.status(201).json(newCart);
     } catch (error) {
-      console.error(error);
+      req.logger.error(error);
       res.status(500).json({ error: "Error al crear el carrito" });
     }
   },
@@ -47,13 +47,13 @@ export const cartsController = {
   
       const cart = await CartManager.getCartById(cartId);
       if (!cart) {
-        return res
-          .status(404)
-          .send({ error: `No existe el carrito con id: ${req.params.cid}` });
+        req.logger.warning(`No existe el carrito con id: ${req.params.cid}`);
+        return res.status(404).send({ error: `No existe el carrito con id: ${req.params.cid}` });
       }
       
       res.send(cart);
     } catch (error) {
+      req.logger.error(error);
       res.status(500);
       errorHandler(error, req, res);
     }
@@ -87,6 +87,7 @@ export const cartsController = {
 
       return res.status(200).json(cart);
     } catch (error) {
+      req.logger.error(error);
       res.status(500);
       errorHandler(error, req, res);
     }
@@ -122,6 +123,7 @@ export const cartsController = {
       );
       res.status(200).send({ status: "ok", payload: updatedCart });
     } catch (error) {
+      req.logger.error(error);
       res.status(500);
       errorHandler(error, req, res);
     }
@@ -145,6 +147,7 @@ export const cartsController = {
 
       return res.status(200).json(updatedCart);
     } catch (error) {
+      req.logger.error(error);
       res.status(500);
       errorHandler(error, req, res);
     }
@@ -181,6 +184,7 @@ export const cartsController = {
 
       return res.status(200).json(updatedCart);
     } catch (error) {
+      req.logger.error(error);
       res.status(500);
       errorHandler(error, req, res);
     }
@@ -200,9 +204,8 @@ export const cartsController = {
   
       const deletedCart = await CartManager.deleteCart(cartId);
       if (!deletedCart) {
-        return res
-          .status(404)
-          .send({ error: `No existe el carrito con id: ${cartId}` });
+        req.logger.warning(`No existe el carrito con id: ${req.params.cid}`);
+        return res.status(404).send({ error: `No existe el carrito con id: ${cartId}` });
       }
       
       res.send({
@@ -210,6 +213,7 @@ export const cartsController = {
         carts: deletedCart,
       });
     } catch (error) {
+      req.logger.fatal(error);
       res.status(500);
       errorHandler(error, req, res);
     }

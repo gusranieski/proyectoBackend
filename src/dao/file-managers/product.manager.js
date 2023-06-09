@@ -59,7 +59,6 @@ export class ProductManagerMemory {
 
   // OBTIENE UN PRODUCTO POR ID
   async getProductById(id) {
-    console.log(id);
     const products = await this.getProducts();
     let search = products.find((p) => p.id === parseInt(id));
 

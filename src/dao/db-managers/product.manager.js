@@ -65,5 +65,3 @@ export class ProductManagerMongo {
     }
   }
 }
-
-// export default ProductManagerMongo;
