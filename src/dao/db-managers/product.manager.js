@@ -8,8 +8,7 @@ export class ProductManagerMongo {
       const products = await productModel.find().lean();
       return products;
     } catch (error) {
-      console.error(error);
-      throw new Error("Error al obtener los productos");
+      throw error;
     }
   }
 
@@ -26,8 +25,7 @@ export class ProductManagerMongo {
       });
       return newProduct;
     } catch (error) {
-      console.error(error);
-      throw new Error("Error al agregar el producto");
+      throw error;
     }
   }
 
@@ -36,8 +34,7 @@ export class ProductManagerMongo {
       const product = await productModel.findById(id);
       return product;
     } catch (error) {
-      console.error(error);
-      throw new Error("Error al obtener el producto");
+      throw error;
     }
   }
     
@@ -50,8 +47,7 @@ export class ProductManagerMongo {
       );
       return updated;
     } catch (error) {
-      console.error(error);
-      throw new Error("Error al actualizar el producto");
+      throw error;
     }
   }
   
@@ -60,8 +56,7 @@ export class ProductManagerMongo {
       const deleted = await productModel.findByIdAndDelete(id).lean();
       return deleted;
     } catch (error) {
-      console.error(error);
-      throw new Error("Error al eliminar el producto");
+      throw error;
     }
   }
 }

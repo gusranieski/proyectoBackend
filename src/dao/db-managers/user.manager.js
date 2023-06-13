@@ -8,7 +8,7 @@
 //       const users = await userModel.find();
 //       return users;
 //     } catch (error) {
-//       throw new Error(`Error al obtener los usuarios: ${error}`);
+//       throw error;
 //     }
 //   }
 
@@ -17,7 +17,7 @@
 //       const newUser = await userModel.create(userData);
 //       return newUser;
 //     } catch (error) {
-//       throw new Error(`Error al crear el usuario: ${error}`);
+//       throw error;
 //     }
 //   }
 
@@ -28,7 +28,7 @@
 //       });
 //       return updatedUser;
 //     } catch (error) {
-//       throw new Error(`Error al actualizar el usuario: ${error}`);
+//       throw error;
 //     }
 //   }
 
@@ -37,7 +37,7 @@
 //       const deletedUser = await userModel.findByIdAndDelete(userId);
 //       return deletedUser;
 //     } catch (error) {
-//       throw new Error(`Error al eliminar el usuario: ${error}`);
+//       throw error;
 //     }
 //   }
 // }

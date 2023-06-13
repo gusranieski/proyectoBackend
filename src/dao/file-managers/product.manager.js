@@ -53,21 +53,26 @@ export class ProductManagerMemory {
       await fs.promises.writeFile(this.#path, JSON.stringify(products, null, 2));
       return newProduct;
     } catch (error) {
-      console.error(error);
+      throw error;
     }
   }
 
   // OBTIENE UN PRODUCTO POR ID
   async getProductById(id) {
-    const products = await this.getProducts();
-    let search = products.find((p) => p.id === parseInt(id));
-
-    if (search == undefined) {
-      console.log("Not Found");
-    } else {
+    try {
+      const products = await this.getProducts();
+      const search = products.find((p) => p.id === parseInt(id));
+  
+      if (!search) {
+        throw new Error("Product not found");
+      }
+  
       return search;
+    } catch (error) {
+      throw error;
     }
   }
+  
   // ACTUALIZA LOS PRODUCTOS
   async updateProduct(id, updatedFields) {
     try {
@@ -87,18 +92,18 @@ export class ProductManagerMemory {
       await fs.promises.writeFile(this.#path, JSON.stringify(updatedProducts, null, 2));
       return updatedProduct;
     } catch (error) {
-      console.error(error);
+      throw error;
     }
   }
   // ELIMINA LOS PRODUCTOS
   async deleteProduct(id) {
     try {
       const products = await this.getProducts();
-      const newArray = products.filter((p) => p.id != id);
+      const newArray = products.filter((p) => p.id !== id);
       await fs.promises.writeFile(this.#path, JSON.stringify(newArray, null, 2));
       return newArray;
     } catch (error) {
-      console.error(error);
+      throw error;
     }
   }
 }

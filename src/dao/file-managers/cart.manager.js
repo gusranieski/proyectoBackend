@@ -37,19 +37,23 @@ export class CartManagerMemory {
       await fs.promises.writeFile(this.#path, JSON.stringify(carts, null, 2));
       return newCart;
     } catch (error) {
-      console.error(error);
+      throw error;
     }
   }
 
   // OBTIENE UN CARRITO POR ID
   async getCartById(id) {
-    const carts = await this.getCarts();
-    let cartSearch = carts.find((c) => c.id === parseInt(id));
+    try {
+      const carts = await this.getCarts();
+      const cartSearch = carts.find((c) => c.id === parseInt(id));
 
-    if (cartSearch == undefined) {
-      console.log("Not Found");
-    } else {
+      if (!cartSearch) {
+        throw new Error("Cart not found");
+      }
+
       return cartSearch;
+    } catch (error) {
+      throw error;
     }
   }
 
@@ -57,8 +61,7 @@ export class CartManagerMemory {
   async addProductToCart(cartId, productId, quantity) {
     try {
       if (!cartId) {
-        console.log("Error: cartId not found");
-        return;
+        throw new Error("cartId not found");
       }
 
       const carts = await this.getCarts();
@@ -67,8 +70,7 @@ export class CartManagerMemory {
       const cart = carts[cartIndex];
 
       if (!cart) {
-        console.log(`Error: cart with id ${cartId} not found`);
-        return;
+        throw new Error(`Cart with id ${cartId} not found`);
       }
 
       const productIndex = cart.products.findIndex((p) => p.id === productId);
@@ -83,7 +85,7 @@ export class CartManagerMemory {
       await fs.promises.writeFile(this.#path, JSON.stringify(carts, null, 2));
       return cart;
     } catch (error) {
-      console.error(error);
+      throw error;
     }
   }
 }
