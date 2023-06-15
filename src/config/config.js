@@ -15,6 +15,7 @@ const PERSISTENCE= process.env.PERSISTENCE;
 
 const ADMIN_EMAIL_GMAIL = process.env.ADMIN_EMAIL_GMAIL;
 const ADMIN_PASSWORD_GMAIL = process.env.ADMIN_PASSWORD_GMAIL;
+const SECRET_TOKEN_EMAIL = process.env.SECRET_TOKEN_EMAIL;
 
 const TWILIO_SID = process.env.TWILIO_SID;
 const TWILIO_TOKEN = process.env.TWILIO_TOKEN;
@@ -40,7 +41,8 @@ export const options = {
   },
   gmail: {
     adminEmail: ADMIN_EMAIL_GMAIL,
-    adminPassword: ADMIN_PASSWORD_GMAIL
+    adminPassword: ADMIN_PASSWORD_GMAIL,
+    emailToken: SECRET_TOKEN_EMAIL
   },
   twilio: {
     twilioId: TWILIO_SID,

@@ -15,6 +15,7 @@ import { options } from "./config/config.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import { addLogger } from "./loggers/logger.js";
 import loggerRouter from "./routes/logger.router.js";
+import forgotRouter from "./routes/forgot.router.js";
 
 const app = express();
 
@@ -84,3 +85,4 @@ app.use("/api/carts", cartsRouter);
 app.use("/api/sessions", usersRouter);
 app.use("/mockingproducts", mocksProductsRouter);
 app.use(errorHandler);
+app.use("/api/sessions", forgotRouter);

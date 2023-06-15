@@ -55,3 +55,7 @@ export const renderProfile = (req, res) => {
 
   res.render("profile", { userData });
 };
+
+export const renderForgot = (req, res) => {
+  res.render("forgot");
+}

@@ -7,6 +7,7 @@ import {
   renderLogin,
   renderSignup,
   renderProfile,
+  renderForgot,
 } from "../controllers/views.controller.js";
 
 const viewsRouter = Router();
@@ -18,5 +19,6 @@ viewsRouter.get("/carts/:cid", renderCarts);
 viewsRouter.get("/login", renderLogin);
 viewsRouter.get("/signup", renderSignup);
 viewsRouter.get("/profile", renderProfile);
+viewsRouter.get("/forgot-password", renderForgot);
 
 export default viewsRouter;
