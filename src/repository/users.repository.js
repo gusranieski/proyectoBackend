@@ -35,15 +35,18 @@ export class UserRepository {
   }
 
   async getUserByEmail(email) {
-    try {
-      const user = await userModel.findOne({ email });
-      const userDto = new GetUserDto(user);
-      return userDto;
-    } catch (error) {
-      throw new Error(`Error al obtener el usuario: ${error}`);
+  try {
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      return null;
     }
+    const userDto = new GetUserDto(user);
+    return userDto;
+  } catch (error) {
+    throw new Error(`Error al obtener el usuario: ${error}`);
   }
-  
+}
+
 }
 
 
