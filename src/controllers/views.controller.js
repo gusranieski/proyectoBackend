@@ -56,6 +56,11 @@ export const renderProfile = (req, res) => {
   res.render("profile", { userData });
 };
 
-export const renderForgot = (req, res) => {
+export const renderForgotPassword = (req, res) => {
   res.render("forgot");
-}
+};
+
+export const renderResetPassword = (req, res) => {
+  const token = req.query.token;
+  res.render("reset", {token});
+};

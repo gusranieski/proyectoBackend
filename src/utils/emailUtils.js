@@ -3,7 +3,6 @@ import { options } from "../config/config.js";
 
 export const sendPasswordResetMail = async (userEmail, token, res) => {
     try {
-      // Configurar el correo electrónico
       const mailOptions = await transport.sendMail({
         from: options.gmail.adminEmail,
         to: userEmail,

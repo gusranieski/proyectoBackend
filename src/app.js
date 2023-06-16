@@ -16,6 +16,7 @@ import { errorHandler } from "./middlewares/errorHandler.js";
 import { addLogger } from "./loggers/logger.js";
 import loggerRouter from "./routes/logger.router.js";
 import forgotRouter from "./routes/forgot.router.js";
+import resetRouter from "./routes/reset.router.js";
 
 const app = express();
 
@@ -86,3 +87,4 @@ app.use("/api/sessions", usersRouter);
 app.use("/mockingproducts", mocksProductsRouter);
 app.use(errorHandler);
 app.use("/api/sessions", forgotRouter);
+app.use("/api/sessions", resetRouter);

@@ -1,0 +1,13 @@
+<h1>Restablecer contraseña</h1>
+<p>Ingresa tu nueva contraseña:</p>
+<div>
+  <form method="post" action="/api/sessions/reset-password?token={{token}}">
+    <input type="text" placeholder="Email" name="email" />
+    <br />
+    <br />
+    <input type="password" placeholder="Nueva Contraseña" name="newPassword" />
+    <br />
+    <br />
+    <button type="submit">Restablecer</button>
+  </form>
+</div>
