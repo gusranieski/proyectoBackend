@@ -73,7 +73,7 @@ export const productsController = {
     };
     
     const newProduct = await ProductManager.addProduct(title, description, code, parseInt(price), parseInt(stock), category, thumbnail, status);
-
+    req.logger.info("se creó un nuevo producto");
     if (!newProduct) {
     res.status(400).send({ error: 'Error al agregar el producto' });
     return;
