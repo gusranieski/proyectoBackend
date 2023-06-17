@@ -30,7 +30,7 @@ app.use(
   session({
     store: MongoStore.create({
       mongoUrl: mongoUrl,
-      ttl: 300,
+      ttl: 1200,
     }),
     secret: mongoSecret,
     resave: true,

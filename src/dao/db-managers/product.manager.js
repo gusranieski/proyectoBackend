@@ -12,22 +12,30 @@ export class ProductManagerMongo {
     }
   }
 
-  async addProduct(title, description, code, price, stock, category, thumbnail) {
+  async addProduct(product) {
     try {
-      const newProduct = await productModel.create({
-        title,
-        description,
-        code,
-        price,
-        stock,
-        category,
-        thumbnail,
-      });
+      const newProduct = await productModel.create(product);
       return newProduct;
     } catch (error) {
       throw error;
     }
   }
+  // async addProduct(title, description, code, price, stock, category, thumbnail) {
+  //   try {
+  //     const newProduct = await productModel.create({
+  //       title,
+  //       description,
+  //       code,
+  //       price,
+  //       stock,
+  //       category,
+  //       thumbnail,
+  //     });
+  //     return newProduct;
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // }
 
   async getProductById(id) {
     try {

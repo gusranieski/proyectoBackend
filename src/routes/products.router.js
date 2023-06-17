@@ -8,8 +8,8 @@ productsRouter.use(json());
 
 productsRouter.get("/", productsController.getAllProducts);
 productsRouter.get("/:id", productsController.getProductById);
-productsRouter.post("/", checkRole(["admin"]), productsController.addProduct);
+productsRouter.post("/", checkRole(["admin","premium"]), productsController.addProduct);
 productsRouter.put("/:id", checkRole(["admin"]), productsController.updateProduct);
-productsRouter.delete("/:id", checkRole(["admin"]), productsController.deleteProduct);
+productsRouter.delete("/:id", checkRole(["admin", "premium"]), productsController.deleteProduct);
 
 export default productsRouter;

@@ -57,7 +57,6 @@ export const productsController = {
       errorHandler(error, req, res);
     }
   },
-  
 
   async addProduct(req, res) {
     try {
@@ -69,19 +68,38 @@ export const productsController = {
           cause: generateProductErrorInfo(req.body),
           message: "Error al crear el producto",
           errorCode: EError.INVALID_JSON
-      });
-    };
-    
-    const newProduct = await ProductManager.addProduct(title, description, code, parseInt(price), parseInt(stock), category, thumbnail, status);
-    req.logger.info("se creó un nuevo producto");
-    if (!newProduct) {
-    res.status(400).send({ error: 'Error al agregar el producto' });
-    return;
-    }
-    req.io.emit("new-product", newProduct);
-    res.status(201).send({ status: "succes", payload: newProduct });    
+        });
+      }
+  
+      let owner = req.user.email;
+      if (!owner) {
+        owner = "admin";
+      }
+      
+      const product = {
+        title,
+        description,
+        code,
+        price: parseInt(price),
+        stock: parseInt(stock),
+        category,
+        thumbnail,
+        status,
+        owner,
+      };
+  
+      const newProduct = await ProductManager.addProduct(product);
+      req.logger.info("se creó un nuevo producto");
+  
+      if (!newProduct) {
+        res.status(400).send({ error: 'Error al agregar el producto' });
+        return;
+      }
+  
+      req.io.emit("new-product", newProduct);
+      res.status(201).send({ status: "success", payload: newProduct });
     } catch (error) {
-      req.logger.error("Error al agregar el producto");
+      req.logger.error("Error al agregar el producto", error);
       res.status(500);
       errorHandler(error, req, res);
     }
@@ -114,35 +132,43 @@ export const productsController = {
       errorHandler(error, req, res);
     }
   },
-  
 
   async deleteProduct(req, res) {
     try {
       const { id } = req.params;
       const productId = parseInt(id);
-      if(Number.isNaN(productId)){
-          CustomError.createError({
-              name: "Product ID error",
-              cause: generateProductErrorParam(id),
-              message: "Error al encontrar el producto",
-              errorCode: EError.INVALID_PARAM
-          });
-      };
-
-      const deletedProduct = await ProductManager.deleteProduct(id);
+      if (Number.isNaN(productId)) {
+        CustomError.createError({
+          name: "Product ID error",
+          cause: generateProductErrorParam(id),
+          message: "Error al encontrar el producto",
+          errorCode: EError.INVALID_PARAM,
+        });
+      }
   
-      if (!deletedProduct) {
+      const product = await ProductManager.getProductById(id);
+  
+      const owner = product.owner;
+      const userId = req.user.email;
+  
+      if (req.user.role === "premium" && owner == userId || req.user.role === "admin") {
+        await ProductManager.deleteProduct(id);
+        req.io.emit("delete-product", product);
+        return res.send({ message: `Producto con id ${id} eliminado correctamente`, products: product });
+      } else {
+        res.status(403).send({ error: "No tienes permiso para borrar este producto" });
+      }
+  
+      if (!product) {
         req.logger.warning(`No existe el producto con id: ${id}`);
         return res.status(404).send({ error: `No existe el producto con id: ${id}` });
       }
-      
-      req.io.emit("delete-product", deletedProduct);
-      res.send({ message: `Producto con id ${id} eliminado correctamente`, products: deletedProduct });
+  
     } catch (error) {
-      req.logger.error("Error al eliminar el producto");
+      req.logger.error("Error al eliminar el producto", error);
       res.status(500);
       errorHandler(error, req, res);
     }
   }
-  
+
 };

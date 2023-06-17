@@ -34,6 +34,17 @@ export class UserRepository {
     }
   }
 
+  async updateUser(userId, user) {
+    try {
+      const updatedUser = await userModel.findByIdAndUpdate(userId, user, { new: true });
+      const userDto = new GetUserDto(updatedUser);
+      return userDto;
+    } catch (error) {
+      throw new Error(`Error al actualizar el usuario: ${error}`);
+    }
+  }
+  
+
   async getUserByEmail(email) {
   try {
     const user = await userModel.findOne({ email });

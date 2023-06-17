@@ -11,8 +11,10 @@ import {
     currentUserController, 
     allUsersController, 
     mailUserController,
-    smsUserController 
+    smsUserController,
+    premiumController 
 } from "../controllers/users.controller.js";
+import { checkRole } from "../middlewares/auth.js";
 
 const usersRouter = Router();
 
@@ -44,5 +46,8 @@ usersRouter.post("/mail", mailUserController);
 
 // ruta sms
 usersRouter.post("/sms", smsUserController);
+
+// ruta de roles
+usersRouter.put("/premium/:id", checkRole(["admin"]), premiumController);
 
 export default usersRouter;

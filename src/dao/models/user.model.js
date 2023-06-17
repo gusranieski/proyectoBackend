@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { cartCollection } from "./cart.model.js";
 
-const userCollection = "users";
+export const userCollection = "users";
 
 const userSchema = new mongoose.Schema({
   first_name: {
@@ -33,7 +33,7 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     required: true,
-    enum: ["usuario", "admin", "premiun"],
+    enum: ["usuario", "admin", "premium"],
     default: "usuario",
   },
 });
