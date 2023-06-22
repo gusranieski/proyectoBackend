@@ -1,4 +1,5 @@
 // import { CartManager } from "../dao/index.js";
+import { ProductManager } from "../dao/factory.js";
 import { CartManager } from "../dao/factory.js";
 import { CustomError } from "../services/customError.js";
 import { EError } from "../enums/EError.js";
@@ -82,6 +83,15 @@ export const cartsController = {
               errorCode:EError.INVALID_PARAM
           });
       };
+
+      const product = await ProductManager.getProductById(productId);
+      
+      const productOwner = product.owner.toString();
+      const userId = req.user._id.toString();
+  
+      if (req.user.role === "premium" && productOwner === userId) {
+        return res.json({ status:"error", message:"no se puede agregar al carrrito un producto que creaste" });
+      }
 
       const cart = await CartManager.addProductToCart(cartId, productId, quantity);
 

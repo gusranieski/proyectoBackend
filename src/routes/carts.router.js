@@ -9,7 +9,7 @@ cartsRouter.use(json());
 cartsRouter.get("/", cartsController.getCarts);
 cartsRouter.post("/", cartsController.addCart);
 cartsRouter.get("/:cid", cartsController.getCartById);
-cartsRouter.post("/:cid/product/:id", checkRole(["usuario"]), cartsController.addProductToCart);
+cartsRouter.post("/:cid/product/:id", checkRole(["usuario", "premium"]), cartsController.addProductToCart);
 cartsRouter.delete("/:cid/products/:id", cartsController.removeProductFromCart);
 cartsRouter.put("/:cid", cartsController.updateCart);
 cartsRouter.put("/:cid/products/:id", cartsController.updateCartItemQuantity);
