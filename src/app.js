@@ -1,9 +1,4 @@
 import express from "express";
-import productsRouter from "./routes/products.router.js";
-import cartsRouter from "./routes/carts.router.js";
-import viewsRouter from "./routes/views.router.js";
-import usersRouter from "./routes/users.router.js";
-import mocksProductsRouter from "./routes/mock.products.router.js";
 import __dirname from "./utils.js";
 import { engine } from "express-handlebars";
 import { Server } from "socket.io";
@@ -14,6 +9,14 @@ import { initializedPassport } from "./config/passport.config.js";
 import { options } from "./config/config.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import { addLogger } from "./loggers/logger.js";
+import { swaggerSpecs } from "./config/docConfig.js";
+import swaggerUI from "swagger-ui-express";
+
+import productsRouter from "./routes/products.router.js";
+import cartsRouter from "./routes/carts.router.js";
+import viewsRouter from "./routes/views.router.js";
+import usersRouter from "./routes/users.router.js";
+import mocksProductsRouter from "./routes/mock.products.router.js";
 import loggerRouter from "./routes/logger.router.js";
 import forgotRouter from "./routes/forgot.router.js";
 import resetRouter from "./routes/reset.router.js";
@@ -74,6 +77,9 @@ app.use((req, res, next) => {
   req.io = io;
   next();
 });
+
+// Swagger
+app.use("/api/docs",swaggerUI.serve, swaggerUI.setup(swaggerSpecs));
 
 // Winston Logger
 app.use(addLogger);

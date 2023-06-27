@@ -1,0 +1,206 @@
+paths:
+  /api/products/:
+    get:
+      summary: Obtiene todos los productos
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Todos los productos fueron obtenidos con éxito
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Products"
+        "500":
+          description: Error intentando acceder al listado de productos
+
+    post:
+      summary: Agrega un producto a la base de datos
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/addProduct"
+      responses:
+        "200":
+          description: El producto fue agregado con éxito
+        "500":
+          description: Error intentando agregar un producto al listado de productos
+
+  /api/products/{id}:
+    get:
+      summary: Obtiene un producto mediante el ID
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del producto que desea obtener
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Se obtuvo el producto correctamente
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Products"
+        "500":
+          description: Error interno del servidor
+
+    put:
+      summary: Actualiza un producto mediante el ID
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del producto que desea actualizar
+          schema:
+            $type: string
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/updateProduct"
+
+      responses:
+        "200":
+          description: Se actualizó el producto correctamente
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Products"
+        "500":
+          description: Error intentando actualizar el producto
+
+    delete:
+      summary: Elimina un producto mediante el ID
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del producto que desea eliminar
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Se eliminó el producto correctamente
+        "500":
+          description: Error interno del servidor
+
+components:
+  schemas:
+    Products:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: ID del producto autogenerado por MongoDB
+        title:
+          type: string
+          description: Nombre del producto
+        description:
+          type: string
+          description: Descripción del producto
+        code:
+          type: number
+          description: Código del producto
+        price:
+          type: number
+          description: Precio del producto
+        status:
+          type: string
+          description: Estado del producto
+        stock:
+          type: number
+          description: Cantidad disponible del producto
+        category:
+          type: string
+          description: Categoría del producto
+        thumbnail:
+          type: array
+          description: Link a la imágen del producto
+        owner:
+          type: ObjectId
+          description: Creador del producto
+      example:
+        _id: ObjectId('642b5966d3aca7fb95ee5d95')
+        title: Led
+        description: Samsung 40 pulgadas
+        code: cod00
+        price: 40000
+        stock: 100
+        category: Leds
+        thumbnail: link de la imágen
+        owner: ObjectId('642b5966d3aca7fb95ee5d95')
+
+  requestBodies:
+    addProduct:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Nombre del producto
+        description:
+          type: string
+          description: Descripción del producto
+        code:
+          type: number
+          description: Código del producto
+        price:
+          type: number
+          description: Precio del producto
+        stock:
+          type: number
+          description: Cantidad disponible del producto
+        category:
+          type: string
+          description: Categoría del producto
+      example:
+        title: Led
+        description: Samsung 40 pulgadas
+        code: cod00
+        price: 40000
+        stock: 100
+        category: Leds
+
+    updateProduct:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Nombre del producto
+        description:
+          type: string
+          description: Descripción del producto
+        code:
+          type: number
+          description: Código del producto
+        price:
+          type: number
+          description: Precio del producto
+        stock:
+          type: number
+          description: Cantidad disponible del producto
+        category:
+          type: string
+          description: Categoría del producto
+      example:
+        title: Led
+        description: Samsung 40 pulgadas
+        code: cod00
+        price: 40000
+        stock: 100
+        category: Leds
