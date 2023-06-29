@@ -48,6 +48,7 @@ const initializedPassport = () => {
                     role: role
                 };
                 const newUserCreated = await userModel.create(newUser);
+                req.logger.info("se registró un nuevo usuario");
                 return done(null, newUserCreated); 
             } catch (error) {
                 return done(error);

@@ -1,0 +1,135 @@
+paths:
+  /api/sessions/signup:
+    post:
+      summary: Crea un usuario nuevo
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/CreateUser"
+      responses:
+        "200":
+          description: Usuario creado exitósamente 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  payload:
+                    $ref: "#components/schemas/User"
+        "500":
+          description: Error interno del servidor
+
+  /api/sessions/login:
+    post:
+      summary: Inicia sesión un usuario
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/LoginUser"
+      responses:
+        "200":
+          description: Sesión del usuario iniciada correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  payload:
+                    $ref: "#components/schemas/User"
+        "500":
+          description: Error interno del servidor
+
+  /api/sessions/logout:
+    post:
+      summary: Cierra la sesión del usuario
+      tags:
+        - Users
+
+      responses:
+        "200":
+          description: Sesión finalizada correctamente
+        "500":
+          description: Error interno del servidor
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: ID del usuario
+        first_name:
+          type: string
+          description: Nombre del usuario
+        last_name:
+          type: string
+          description: Apellido del usuario
+        age:
+          type: number
+          description: Edad del usuario
+        email:
+          type: string
+          description: email del usuario
+        role:
+          type: String
+          description: Rol del usuario 
+
+      example:
+        _id: ObjectId('646d608d72331353f93b366b')
+        first_name: Eric
+        last_name: Gomez
+        age: 30
+        email: eric@email.com
+        role: usuario
+
+  requestBodies:
+    CreateUser:
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: Nombre del usuario
+        last_name:
+          type: string
+          description: Apellido del usuario
+        email:
+          type: string
+          description: email del usuario
+        age: 
+          type: number
+          description: Edad del usuario
+        password:
+          type: string
+          description: contraseña del usuario
+      example:
+        first_name: Eric
+        last_name: Gomez
+        email: eric@email.com
+        age: 30
+        password: "1234"
+        
+    LoginUser:
+      type: object
+      properties:
+        email:
+          type: string
+          description: email del usuario
+        password:
+          type: string
+          description: Contraseña del usuario
+      example:
+        email: eric@email.com
+        password: "1234"

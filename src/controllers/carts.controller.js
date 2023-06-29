@@ -14,7 +14,7 @@ export const cartsController = {
   async getCarts(req, res) {
     try {
       const carts = await CartManager.getCarts();
-      res.send(carts);
+      res.status(200).send({ status:"success", payload:carts });
     } catch (error) {
       req.logger.error(error);
       res.status(500).json({ error: "Error al obtener los carritos" });
@@ -26,7 +26,8 @@ export const cartsController = {
     try {
       const products = req.body;
       const newCart = await CartManager.addCart(products);
-      res.status(201).json(newCart);
+      req.logger.info("Nuevo carrito creado");
+      res.status(201).send({ status:"success", payload:newCart });
     } catch (error) {
       req.logger.error(error);
       res.status(500).json({ error: "Error al crear el carrito" });
@@ -51,8 +52,8 @@ export const cartsController = {
         req.logger.warning(`No existe el carrito con id: ${req.params.cid}`);
         return res.status(404).send({ error: `No existe el carrito con id: ${req.params.cid}` });
       }
-      
-      res.send(cart);
+
+      res.status(200).send({ status:"success", payload:cart });
     } catch (error) {
       req.logger.error(error);
       res.status(500);
@@ -84,8 +85,14 @@ export const cartsController = {
           });
       };
 
+      // Verificar si el usuario está autenticado
+      if (!req.user) {
+        req.logger.warning("no se inició sesión para agregar un producto al carrito")
+        return res.json({ status: "error", message: "Debes iniciar sesión para agregar un producto al carrito" });
+      }
+
       const product = await ProductManager.getProductById(productId);
-      
+
       const productOwner = product.owner.toString();
       const userId = req.user._id.toString();
   
@@ -94,8 +101,8 @@ export const cartsController = {
       }
 
       const cart = await CartManager.addProductToCart(cartId, productId, quantity);
-
-      return res.status(200).json(cart);
+      req.logger.info(`Producto con ID:${productId} agregado al carrito ID:${cartId}`)
+      return res.status(200).send({ status:"success", payload:cart });
     } catch (error) {
       req.logger.error(error);
       res.status(500);
@@ -131,7 +138,9 @@ export const cartsController = {
         productId,
         quantity
       );
-      res.status(200).send({ status: "ok", payload: updatedCart });
+
+      req.logger.info(`Producto con ID:${productId} eliminado del carrito ID:${cartId}`)
+      res.status(200).send({ status:"success", payload:updatedCart });
     } catch (error) {
       req.logger.error(error);
       res.status(500);
@@ -155,7 +164,8 @@ export const cartsController = {
 
       const updatedCart = await CartManager.updateCart(cartId, products);
 
-      return res.status(200).json(updatedCart);
+      req.logger.info("carrito actualizado");
+      return res.status(200).send({ status:"success", payload:updatedCart });
     } catch (error) {
       req.logger.error(error);
       res.status(500);
@@ -176,23 +186,24 @@ export const cartsController = {
             message:"Error al encontrar el carrito - Id incorrecto",
             errorCode:EError.INVALID_PARAM
         });
-    };
-    if(Number.isNaN(parseInt(productId))){
+      };
+      if(Number.isNaN(parseInt(productId))){
         CustomError.createError({
             name:"Product id error",
             cause:generateProductErrorParam(req.params.id),
             message:"Error al encontrar el producto - Id incorrecto",
             errorCode:EError.INVALID_PARAM
         });
-    };
+      };
 
       const updatedCart = await CartManager.updateCartItemQuantity(
         cartId,
         productId,
         quantity
       );
-
-      return res.status(200).json(updatedCart);
+      
+      req.logger.info(`Cantidad del producto con ID:${productId} actualizada:${quantity}`)
+      return res.status(200).send({ status:"success", payload:updatedCart });
     } catch (error) {
       req.logger.error(error);
       res.status(500);
@@ -217,11 +228,8 @@ export const cartsController = {
         req.logger.warning(`No existe el carrito con id: ${req.params.cid}`);
         return res.status(404).send({ error: `No existe el carrito con id: ${cartId}` });
       }
-      
-      res.send({
-        message: `Carrito con id ${cartId} eliminado correctamente`,
-        carts: deletedCart,
-      });
+      req.logger.info(`Carrito ID: ${cartId} eliminado`);
+      res.status(200).send({ status: "success", message: "carrito eliminado", payload: deletedCart });
     } catch (error) {
       req.logger.fatal(error);
       res.status(500);
@@ -248,7 +256,8 @@ export const cartsController = {
       if (cart) {
         const purchaseResult = await CartManager.getTicket(cart, req.user.email);
 
-        res.send(purchaseResult);
+        req.logger.info("Compra realizada exitósamente");
+        res.status(200).send({ status: "success", payload: purchaseResult });
       } else {
         res.send("El carrito no se encuentra");
       }
