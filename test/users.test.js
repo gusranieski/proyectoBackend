@@ -5,6 +5,7 @@ import userModel from "../src/dao/models/user.model.js";
 
 const expect = chai.expect;
 const requester = supertest(app);
+let cookie;
 
 describe("Testing de users", () => {
   before(async function () {
@@ -59,13 +60,33 @@ describe("Testing de users", () => {
     });
   });
 
-  describe("POST /logout", () => {
-    it("Debería cerrar la sesión correctamente y devolver el mensaje de éxito", async function () {
-      const response = await requester.post("/api/sessions/logout");
-      expect(response.statusCode).to.be.equal(200);
-      expect(response.body).to.haveOwnProperty("message").that.equals("Sesión finalizada correctamente");
-    });
+  describe("POST /login", () => {
+    it("Debería iniciar sesión correctamente y establecer la cookie", async function() {
+      const credentials = {
+        email: "prueba@example.com",
+        password: "password123",
+      };
+  
+      const response = await requester.post("/api/sessions/login").send(credentials);
 
+      expect(response.statusCode).to.be.equal(302);
+      expect(response.redirect).to.be.equal(true);
+      expect(response.headers).to.have.property("set-cookie");
+  
+      // Extraer la cookie del encabezado de respuesta
+      const cookieResult = response.headers["set-cookie"][0];
+      const cookieData = {
+            name: cookieResult.split("=")[0],
+            value: cookieResult.split("=")[1]
+       }
+       cookie = cookieData;
+    //    console.log("cookie data:", cookieData.name); 
+      expect(cookieData.name).to.be.ok.and.equal("connect.sid");
+      expect(cookieData.value).to.be.ok;
+    });
+  });
+  
+  describe("POST /logout", () => {
     it("Debería devolver un error al intentar cerrar la sesión sin haber iniciado sesión previamente", async function () {
       const response = await requester.post("/api/sessions/logout");
 
