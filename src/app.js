@@ -94,3 +94,5 @@ app.use("/mockingproducts", mocksProductsRouter);
 app.use(errorHandler);
 app.use("/api/sessions", forgotRouter);
 app.use("/api/sessions", resetRouter);
+
+export {app};

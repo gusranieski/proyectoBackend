@@ -8,13 +8,13 @@ export const passportSignupController = passport.authenticate("register", {
 });
 
 export const productsRedirectController = (req, res) => {
-  res.status(200).redirect("/products");
   req.logger.info("login exitoso");
+  res.status(302).redirect("/products");
 };
 
 export const passportFailSignup = (req, res) => {
   req.logger.error("registro inválido");
-  res.status(401).send(`Usuario no registrado o contraseña incorrecta, <a href="/signup">registrarse</a>`);
+  res.status(401).send(`Usuario ya registrado o campos incompletos, <a href="/signup">registrarse</a>`);
 };
 
 export const passportLoginController = passport.authenticate("login", {
@@ -33,6 +33,10 @@ export const signupGithubCallbackController = passport.authenticate("githubSignu
 });
 
 export const logoutController = (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).send({ status: "error", message: "No se ha iniciado sesión" });
+  }
+
   req.logOut((error) => {
     if (error) {
       return res.status(500).send("No se pudo cerrar la sesión");
@@ -42,11 +46,12 @@ export const logoutController = (req, res) => {
           return res.status(500).send("No se pudo cerrar la sesión");
         }
         req.logger.info("Sesión finalizada correctamente");
-        res.status(200).send(`Sesión finalizada correctamente, <a href="/login">volver a iniciar sesión</a>`);
+        res.status(200).send({ status: "success", message: "Sesión finalizada correctamente" });
       });
     }
   });
 };
+
 
 export const currentUserController = async (req, res) => {
   if (req.user) {

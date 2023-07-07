@@ -26,11 +26,12 @@ const initializedPassport = () => {
                         name: "User create error",
                         cause:generateUserErrorInfo(req.body),
                         message: "Error creando el usuario",
-                        errorCode: EError.INVALID_JSON
+                        errorCode: EError.INVALID_JSON,
                     });
                 };
                 const user = await userModel.findOne({ email: username });
                 if (user) {
+                    req.logger.error("usuario ya registrado");
                     return done(null, false);
                 }
                 let role = "usuario";
@@ -51,6 +52,7 @@ const initializedPassport = () => {
                 req.logger.info("se registró un nuevo usuario");
                 return done(null, newUserCreated); 
             } catch (error) {
+                req.logger.error("registro inválido");
                 return done(error);
             }
         }
