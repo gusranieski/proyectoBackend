@@ -14,6 +14,7 @@ export const cartsController = {
   async getCarts(req, res) {
     try {
       const carts = await CartManager.getCarts();
+      req.logger.info("Listado de carritos obtenidos");
       res.status(200).send({ status:"success", payload:carts });
     } catch (error) {
       req.logger.error(error);
@@ -50,9 +51,10 @@ export const cartsController = {
       const cart = await CartManager.getCartById(cartId);
       if (!cart) {
         req.logger.warning(`No existe el carrito con id: ${req.params.cid}`);
-        return res.status(404).send({ error: `No existe el carrito con id: ${req.params.cid}` });
+        return res.status(404).send({ status:"error", message: `No existe el carrito con id: ${req.params.cid}` });
       }
 
+      req.logger.info(`Carrito con id: ${req.params.cid} existente`);
       res.status(200).send({ status:"success", payload:cart });
     } catch (error) {
       req.logger.error(error);

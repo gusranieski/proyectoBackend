@@ -34,6 +34,7 @@ export const signupGithubCallbackController = passport.authenticate("githubSignu
 
 export const logoutController = (req, res) => {
   if (!req.isAuthenticated()) {
+    req.logger.warning("No se ha iniciado sesión");
     return res.status(401).send({ status: "error", message: "No se ha iniciado sesión" });
   }
 

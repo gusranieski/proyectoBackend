@@ -22,7 +22,7 @@ export const productsController = {
           sort === "asc" ? { price: 1 } : sort === "desc" ? { price: -1 } : {},
       };
       const paginatedProducts = await productModel.paginate(filter, options);
-  
+      req.logger.info("Listado de productos obtenidos");
       res.status(200).send({ status: "ok", payload: paginatedProducts });
     } catch (error) {
       res.status(500).send({ error: error.message });
@@ -49,7 +49,8 @@ export const productsController = {
         req.logger.error(`No existe el producto con id: ${req.params.id}`);
         return res.status(404).send({ error: `No existe el producto con id: ${req.params.id}` });
       }
-  
+
+      req.logger.info(`Producto con id: ${req.params.id} existente`);
       res.send(product);
     } catch (error) {
       req.logger.error("Error al obtener el producto por ID");
@@ -99,7 +100,7 @@ export const productsController = {
       req.io.emit("new-product", newProduct);
       res.status(201).send({ status: "success", payload: newProduct });
     } catch (error) {
-      req.logger.error("Error al agregar el producto", error);
+      req.logger.error("Error al agregar el producto");
       res.status(500);
       errorHandler(error, req, res);
     }
@@ -165,7 +166,7 @@ export const productsController = {
       }
   
     } catch (error) {
-      req.logger.error("Error al eliminar el producto", error);
+      req.logger.error("Error al eliminar el producto");
       res.status(500);
       errorHandler(error, req, res);
     }

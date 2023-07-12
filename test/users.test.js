@@ -19,8 +19,8 @@ describe("Testing de users", () => {
         first_name: "nombre",
         last_name: "apellido",
         age: "30",
-        email: "prueba@email.com",
-        password: "123",
+        email:"adminCoder@coder.com",
+        password:"adminCod3r123",
       };
 
       const response = await requester.post("/api/sessions/signup").send(newUser);
@@ -35,8 +35,8 @@ describe("Testing de users", () => {
         first_name: "nombre",
         last_name: "apellido",
         age: "30",
-        email: "prueba@email.com",
-        password: "123",
+        email:"adminCoder@coder.com",
+        password:"adminCod3r123",
       };
 
       const response = await requester.post("/api/sessions/signup").send(newUser);
@@ -48,23 +48,23 @@ describe("Testing de users", () => {
 
     it("Debería retornar un error al intentar crear un usuario sin completar todos los campos", async function () {
       const newUser = {
-        email: "prueba@email.com",
-        password: "123",
+        email:"adminCoder@coder.com",
+        password:"adminCod3r123",
       };
 
       const response = await requester.post("/api/sessions/signup").send(newUser);
 
       expect(response.statusCode).to.be.equal(200);
       expect(response.body).to.haveOwnProperty("status");
-      expect(response._body.message).to.be.equal("Error creando el usuario");
+      expect(response.body.message).to.be.equal("Error creando el usuario");
     });
   });
 
   describe("POST /login", () => {
     it("Debería iniciar sesión correctamente y establecer la cookie", async function() {
       const credentials = {
-        email: "prueba@example.com",
-        password: "password123",
+        email:"adminCoder@coder.com",
+        password:"adminCod3r123",
       };
   
       const response = await requester.post("/api/sessions/login").send(credentials);
@@ -73,97 +73,26 @@ describe("Testing de users", () => {
       expect(response.redirect).to.be.equal(true);
       expect(response.headers).to.have.property("set-cookie");
   
-      // Extraer la cookie del encabezado de respuesta
+      // Extrae la cookie del encabezado de respuesta
       const cookieResult = response.headers["set-cookie"][0];
       const cookieData = {
             name: cookieResult.split("=")[0],
             value: cookieResult.split("=")[1]
-       }
-       cookie = cookieData;
-    //    console.log("cookie data:", cookieData.name); 
+      }
+      cookie = cookieData;
       expect(cookieData.name).to.be.ok.and.equal("connect.sid");
       expect(cookieData.value).to.be.ok;
     });
   });
-  
+
   describe("POST /logout", () => {
     it("Debería devolver un error al intentar cerrar la sesión sin haber iniciado sesión previamente", async function () {
       const response = await requester.post("/api/sessions/logout");
-
+      
       expect(response.statusCode).to.be.equal(401);
       expect(response.body).to.haveOwnProperty("message").that.equals("No se ha iniciado sesión");
     });
   });
 });
-
-// import chai from "chai";
-// import supertest from "supertest";
-
-// const expect = chai.expect;
-// const requester = supertest("http://localhost:8080");
-
-// describe("Testing de users", () => {
-//   describe("POST /users", () => {
-
-//     it("Debería crear un nuevo usuario correctamente y redirige a /products", async () => {
-//       const newUser = {
-//         first_name: "nombre",
-//         last_name: "apellido",
-//         age: "30",
-//         email: "prueba@email.com",
-//         password: "123",
-//       };
-
-//       const response = await requester.post("/api/sessions/signup").send(newUser);
-
-//       expect(response.statusCode).to.be.equal(302);
-//       expect(response.redirect).to.be.equal(true);
-//       expect(response.headers).to.have.property("location").that.equals("/products");
-//     });
-
-//     it("Debería retornar un error al intentar registrar un usuario existente y redirige a /api/sessions/failure-signup", async () => {
-//       const newUser = {
-//         first_name: "nombre",
-//         last_name: "apellido",
-//         age: "30",
-//         email: "prueba@email.com",
-//         password: "123",
-//       };
-
-//       const response = await requester.post("/api/sessions/signup").send(newUser);
-
-//       expect(response.statusCode).to.be.equal(302);
-//       expect(response.redirect).to.be.equal(true);
-//       expect(response.headers).to.have.property("location").that.equals("/api/sessions/failure-signup");
-//     });
-
-//     it("Debería retornar un error al intentar crear un usuario sin completar todos los campos", async () => {
-//       const newUser = {
-//         email: "prueba@email.com",
-//         password: "123",
-//       };
-
-//       const response = await requester.post("/api/sessions/signup").send(newUser);
-
-//       expect(response.statusCode).to.be.equal(200);
-//       expect(response.body).to.haveOwnProperty("status");
-//       expect(response._body.message).to.be.equal("Error creando el usuario");
-//     });
-//   });
-
-//   describe("POST /logout", () => {
-//     it("Debería cerrar la sesión correctamente y devolver el mensaje de éxito", async () => {
-//       const response = await requester.post("/api/sessions/logout");
-//       console.log(response);
-//       expect(response.statusCode).to.be.equal(200);
-//       expect(response.body).to.haveOwnProperty("message").that.equals("Sesión finalizada correctamente");
-//     });
-
-//     it("Debería devolver un error al intentar cerrar la sesión sin haber iniciado sesión previamente", async () => {
-//       const response = await requester.post("/api/sessions/logout");
-
-//       expect(response.statusCode).to.be.equal(401);
-//       expect(response.body).to.haveOwnProperty("message").that.equals("No se ha iniciado sesión");
-//     });
-//   });
-// });
+    
+export { cookie };
