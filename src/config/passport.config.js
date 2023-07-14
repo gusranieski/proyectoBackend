@@ -7,6 +7,7 @@ import { options } from "./config.js";
 import { CustomError } from "../services/customError.js";
 import { EError } from "../enums/EError.js";
 import { generateUserErrorInfo } from "../services/userErrorInfo.js";
+import cartModel from "../dao/models/cart.model.js";
 
 const adminUser = options.auth.account
 const adminPass = options.auth.pass
@@ -29,6 +30,10 @@ const initializedPassport = () => {
                         errorCode: EError.INVALID_JSON,
                     });
                 };
+
+                const cart = new cartModel(); // Crea un nuevo carrito
+                await cart.save();
+
                 const user = await userModel.findOne({ email: username });
                 if (user) {
                     req.logger.error("usuario ya registrado");
@@ -42,10 +47,11 @@ const initializedPassport = () => {
                 const newUser = {
                     first_name,
                     last_name,
+                    full_name: `${first_name} ${last_name}`,
                     age,
                     email: username,
                     password: createHash(password),
-                    cart: null,
+                    cart: cart._id, // Asigna el ID del carrito al usuario
                     role: role
                 };
                 const newUserCreated = await userModel.create(newUser);
@@ -85,30 +91,48 @@ const initializedPassport = () => {
         }
     ));
 
-//Estrategia de autenticación con github
 passport.use("githubSignup", new GithubStrategy(
     {
         clientID: options.github.clientID,
         clientSecret: options.github.clientSecret,
         callbackURL: options.github.callbackURL,
     },
-    async(accessToken, refreshToken, profile, done)=>{
-        try {
-            const userExists = await userModel.findOne({email:profile.username});
-            if(userExists) {
-                return done(null, userExists)
-            }
-            const newUser = {
-                email: profile.username,
-                password: createHash(profile.id)
-            };
-            const newUserCreated = await userModel.create(newUser);
-            return done(null, newUserCreated)
-        } catch (error) {
-            return done(error)
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        const { displayName } = profile;
+
+        const cart = new cartModel(); // Crea un nuevo carrito
+        await cart.save();
+    
+        const userExists = await userModel.findOne({ email: profile.username });
+        if (userExists) {
+          return done(null, userExists);
         }
+
+        let role = "usuario";
+        if (profile.email === adminUser && password === adminPass) {
+            role = "admin";
+        }
+    
+        const newUser = {
+          first_name: displayName,
+          last_name: displayName, 
+          full_name: displayName,
+          age: null, 
+          email: profile.username,
+          password: createHash(profile.id),
+          cart: cart._id,
+          role: role,
+        };
+    
+        const newUserCreated = await userModel.create(newUser);
+        return done(null, newUserCreated);
+      } catch (error) {
+        console.log(error);
+        return done(error);
+      }
     }
-));
+  ));
 
     passport.serializeUser((user, done) => {
         done(null, user._id);

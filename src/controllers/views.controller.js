@@ -25,7 +25,7 @@ export const renderProducts = async (req, res) => {
 
   const paginatedProducts = await productModel.paginate({}, options);
   // mensaje de bienvenida si hay un usuario autenticado
-  const userData = req.user ? { user: req.user.email, role: req.user.role } : null;
+  const userData = req.user ? { user: req.user.email, role: req.user.role, cart: req.user.cart._id } : null;
 
   res.render("products", { paginatedProducts, userData });
 };
@@ -51,7 +51,7 @@ export const renderSignup = (req, res) => {
 };
 
 export const renderProfile = (req, res) => {
-  const userData = req.user ? { user: req.user.email, role: req.user.role } : null;
+  const userData = req.user ? { user: req.user.email, role: req.user.role, cart: req.user.cart._id, products: req.user.cart.products._id } : null;
 
   res.render("profile", { userData });
 };

@@ -1,39 +1,54 @@
-  {{#if userData}}
-    <h2>Bienvenido {{userData.user}}!</h2>
-  {{/if}}
-<div>
-  <h1>Products:</h1>
-</div>
-{{#each paginatedProducts.docs}}
-  <div>
-    <h2>{{this.title}}</h2>
-    <ul>
-      <li>{{this.description}}</li>
-      <li>{{this.code}}</li>
-      <li>{{this.price}}</li>
-      <li>{{this.stock}}</li>
-      <li>{{this.category}}</li>
-      <li>{{this.thumbnail}}</li>
-      <li>{{this.status}}</li>
-      <li>{{this.id}}</li>
-    </ul>
+<html>
+  <head>
+    <link rel="stylesheet" href="/css/home.css" />
+  </head>
+  <body>
+    {{#if userData}}
+      <h2>Bienvenido {{userData.user}}!</h2>
+      <h2>Tu ID del carrito: {{userData.cart}}</h2>    
+    {{/if}}
     <div>
-      <button>Add to Cart</button>
+      <h1>Products:</h1>
     </div>
-  </div>
-{{/each}}
-
-<div>
-  {{#if paginatedProducts.hasPrevPage}}
-    <a href="/products?page={{paginatedProducts.prevPage}}">Anterior</a>
-  {{/if}}
-
-  <span>Página
-    {{paginatedProducts.page}}
-    de
-    {{paginatedProducts.totalPages}}</span>
-
-  {{#if paginatedProducts.hasNextPage}}
-    <a href="/products?page={{paginatedProducts.nextPage}}">Siguiente</a>
-  {{/if}}
-</div>
+    <div class="products-list">
+      {{#each paginatedProducts.docs}}
+        <div class="product-card">
+          <h2>{{this.title}}</h2>
+          <img src="{{this.thumbnail}}" alt="{{title}}" />
+          <ul>
+            <li><span>Producto:</span> {{this.title}}</li>
+            <li><span>Descripción:</span> {{this.description}}</li>
+            <li><span>Código:</span> {{this.code}}</li>
+            <li><span>Precio:</span> {{this.price}}</li>
+            <li><span>Stock:</span> {{this.stock}}</li>
+            <li><span>Categoría:</span> {{this.category}}</li>
+            <li><span>ID:</span> {{this._id}}</li>
+          </ul>
+          <div>
+            {{#if ../userData.cart}}
+              <form method="post" action="/api/carts/{{../userData.cart}}/product/{{this._id}}">
+                <button type="submit">Add to Cart</button>
+              </form>
+            {{else}}
+              <p>No se ha creado un carrito para este usuario.</p>
+            {{/if}}
+          </div>
+        </div>
+      {{/each}}
+    </div>
+    <div>
+      {{#if paginatedProducts.hasPrevPage}}
+        <a href="/products?page={{paginatedProducts.prevPage}}">Anterior</a>
+      {{/if}}
+      <span>
+        Página
+        {{paginatedProducts.page}}
+        de
+        {{paginatedProducts.totalPages}}
+      </span>
+      {{#if paginatedProducts.hasNextPage}}
+        <a href="/products?page={{paginatedProducts.nextPage}}">Siguiente</a>
+      {{/if}}
+    </div>
+  </body>
+</html>

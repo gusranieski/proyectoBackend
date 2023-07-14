@@ -76,6 +76,12 @@ export const productsController = {
       if (!owner) {
         owner = "admin";
       }
+
+      const existingProduct = await productModel.findOne({ code });
+      if (existingProduct) {
+        req.logger.info("El código del producto ya está en uso");
+        return res.status(400).send({ error: "El código del producto ya está en uso" });
+      }
       
       const product = {
         title,

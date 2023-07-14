@@ -20,22 +20,6 @@ export class ProductManagerMongo {
       throw error;
     }
   }
-  // async addProduct(title, description, code, price, stock, category, thumbnail) {
-  //   try {
-  //     const newProduct = await productModel.create({
-  //       title,
-  //       description,
-  //       code,
-  //       price,
-  //       stock,
-  //       category,
-  //       thumbnail,
-  //     });
-  //     return newProduct;
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
 
   async getProductById(id) {
     try {

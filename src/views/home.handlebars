@@ -1,17 +1,25 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="/css/home.css" />
+  </head>
+  <body>
 
-{{#each products}}
-<div>
-    <span>Producto:</span>
-    <ul>
-        <li>{{title}}</li>
-        <li>{{description}}</li>
-        <li>{{code}}</li>
-        <li>{{price}}</li>
-        <li>{{stock}}</li>
-        <li>{{category}}</li>
-        <li>{{thumbnail}}</li>
-        <li>{{status}}</li>
-        <li>{{id}}</li>
-    </ul>
-</div>
-{{/each}}
+    <div class="products-list">
+      {{#each products}}
+        <div class="product-card">
+          <img src="{{thumbnail}}" alt="{{title}}" />
+          <ul>
+            <li><span>Producto:</span> {{title}}</li>
+            <li><span>Descripción:</span> {{description}}</li>
+            <li><span>Código:</span> {{code}}</li>
+            <li><span>Precio:</span> {{price}}</li>
+            <li><span>Stock:</span> {{stock}}</li>
+            <li><span>Categoría:</span> {{category}}</li>
+            <li><span>ID:</span> {{_id}}</li>
+          </ul>
+        </div>
+      {{/each}}
+    </div>
+
+  </body>
+</html>

@@ -35,7 +35,7 @@ export const signupGithubCallbackController = passport.authenticate("githubSignu
 export const logoutController = (req, res) => {
   if (!req.isAuthenticated()) {
     req.logger.warning("No se ha iniciado sesión");
-    return res.status(401).send({ status: "error", message: "No se ha iniciado sesión" });
+    return res.status(401).send(`No se ha iniciado sesión, <a href="/login">volver a iniciar sesión</a>`);
   }
 
   req.logOut((error) => {
@@ -47,7 +47,7 @@ export const logoutController = (req, res) => {
           return res.status(500).send("No se pudo cerrar la sesión");
         }
         req.logger.info("Sesión finalizada correctamente");
-        res.status(200).send({ status: "success", message: "Sesión finalizada correctamente" });
+        res.status(200).send(`Sesión finalizada correctamente, <a href="/login">volver a iniciar sesión</a>`);
       });
     }
   });

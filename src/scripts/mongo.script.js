@@ -6,7 +6,7 @@ connectDB();
 
 const updateProducts = async () => {
   try {
-    const adminUserId = '646992511117cc5364726759';
+    const adminUserId = '64b07528f72f7213a64fddec';
     
     // Verificar si el campo "owner" ya está presente en los documentos
     const hasOwnerField = await productModel.exists({ owner: { $exists: true } });

@@ -90,7 +90,6 @@ describe("Testing de users", () => {
       const response = await requester.post("/api/sessions/logout");
       
       expect(response.statusCode).to.be.equal(401);
-      expect(response.body).to.haveOwnProperty("message").that.equals("No se ha iniciado sesión");
     });
   });
 });
