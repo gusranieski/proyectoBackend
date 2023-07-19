@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
   },
   full_name: {
     type: String,
-    default: '',
+    default: "",
   },
   age: Number,
   email: {
@@ -35,6 +35,35 @@ const userSchema = new mongoose.Schema({
     required: true,
     enum: ["usuario", "admin", "premium"],
     default: "usuario",
+  },
+  documents: {
+    type: [
+      {
+        name: {
+          type: String,
+          required: true,
+        },
+        reference: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
+    default: [],
+  },
+  last_connection: {
+    type: String,
+    default: null,
+  },
+  status: {
+    type: String,
+    required: true,
+    enums: ["completo", "incompleto", "pendiente"],
+    default: "pendiente",
+  },
+  avatar: {
+    type: String,
+    default: "",
   },
 });
 

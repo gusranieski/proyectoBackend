@@ -19,5 +19,6 @@ export class GetUserDto {
     this.email = userDB.email;
     this.role = userDB.role;
     this.cart = userDB.cart;
+    this.documents = userDB.documents;
   }
 }

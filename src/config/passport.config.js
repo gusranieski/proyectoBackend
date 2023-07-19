@@ -21,6 +21,7 @@ const initializedPassport = () => {
         },
         async (req, username, password, done) => {
             try {
+                console.log(req.file);
                 const {first_name, last_name, age}= req.body
                 if(!first_name || !last_name || !age) {
                     CustomError.createError({
@@ -52,7 +53,8 @@ const initializedPassport = () => {
                     email: username,
                     password: createHash(password),
                     cart: cart._id, // Asigna el ID del carrito al usuario
-                    role: role
+                    role: role,
+                    avatar: req.file.path
                 };
                 const newUserCreated = await userModel.create(newUser);
                 req.logger.info("se registró un nuevo usuario");
@@ -80,11 +82,14 @@ const initializedPassport = () => {
                     return done(null, false);
                 }
                 let role = "usuario";
-                if (username.password === password) {
+                if (username === adminUser && password === adminPass) {
                     role = "admin";
                 }
                 user.role = role;
-                return done(null, user);
+                // modificar última conexión del usuario
+                user.last_connection = new Date().toLocaleString();
+                const userUpdated = await userModel.findByIdAndUpdate(user._id, user)
+                return done(null, userUpdated);
             } catch (error) {
                 return done(error);
             }
