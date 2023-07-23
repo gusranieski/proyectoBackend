@@ -54,7 +54,7 @@ const initializedPassport = () => {
                     password: createHash(password),
                     cart: cart._id, // Asigna el ID del carrito al usuario
                     role: role,
-                    avatar: req.file.path
+                    avatar: req.file.filename
                 };
                 const newUserCreated = await userModel.create(newUser);
                 req.logger.info("se registró un nuevo usuario");
@@ -88,7 +88,7 @@ const initializedPassport = () => {
                 user.role = role;
                 // modificar última conexión del usuario
                 user.last_connection = new Date().toLocaleString();
-                const userUpdated = await userModel.findByIdAndUpdate(user._id, user)
+                const userUpdated = await userModel.findByIdAndUpdate(user._id, user);
                 return done(null, userUpdated);
             } catch (error) {
                 return done(error);

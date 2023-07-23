@@ -90,7 +90,7 @@ export const productsController = {
         price: parseInt(price),
         stock: parseInt(stock),
         category,
-        thumbnail,
+        thumbnail: req.file.filename,
         status,
         owner,
       };
