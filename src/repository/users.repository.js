@@ -1,4 +1,4 @@
-import { CreateUserDto, GetUserDto } from "../dao/dto/user.dto.js";
+import { CreateUserDto, GetUserDto, GetAllUsersDto } from "../dao/dto/user.dto.js";
 import userModel from "../dao/models/user.model.js";
 
 export class UserRepository {
@@ -7,8 +7,8 @@ export class UserRepository {
   async getUsers() {
     try {
       const users = await userModel.find();
-      const usersDto = users.map(user => new GetUserDto(user));
-      return usersDto;
+      const AllUsersDto = users.map(user => new GetAllUsersDto(user));
+      return AllUsersDto;
     } catch (error) {
       throw new Error(`Error al obtener los usuarios: ${error}`);
     }

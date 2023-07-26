@@ -22,3 +22,11 @@ export class GetUserDto {
     this.documents = userDB.documents;
   }
 }
+
+export class GetAllUsersDto {
+  constructor(userDB) {
+    this.full_name = `${userDB.first_name} ${userDB.last_name}`;
+    this.email = userDB.email;
+    this.role = userDB.role;
+  }
+}

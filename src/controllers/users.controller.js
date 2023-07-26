@@ -6,7 +6,7 @@ export const currentUserController = async (req, res) => {
     if (req.user) {
       try {
         const userDto = await userService.getUser(req.user.id);
-        return res.send({ userInfo: userDto });
+        return res.send({ user: userDto });
       } catch (error) {
         res.status(500).send("Error al obtener el usuario actual");
       }
@@ -19,8 +19,8 @@ export const currentUserController = async (req, res) => {
   export const allUsersController = async (req, res) => {
     if (req.user) {
       try {
-        const userDto = await userService.getUsers(req.user.id);
-        return res.send({ userInfo: userDto });
+        const AllUsersDto = await userService.getUsers(req.user.id);
+        return res.send({ users: AllUsersDto });
       } catch (error) {
         res.status(500).send("Error al obtener todos los usuarios");
       }
