@@ -1,6 +1,6 @@
 <html>
   <head>
-    <link rel="stylesheet" href="/css/home.css" />
+    <link rel="stylesheet" href="/css/products.css" />
   </head>
   <body>
     {{#if userData}}
@@ -8,7 +8,7 @@
       <h2>Tu ID del carrito: {{userData.cart}}</h2>    
     {{/if}}
     <div>
-      <h1>Products:</h1>
+      <h1>Productos:</h1>
     </div>
     <div class="products-list">
       {{#each paginatedProducts.docs}}
@@ -27,7 +27,7 @@
           <div>
             {{#if ../userData.cart}}
               <form method="post" action="/api/carts/{{../userData.cart}}/product/{{this._id}}">
-                <button type="submit">Add to Cart</button>
+                <button type="submit">AGREGAR AL CARRITO</button>
               </form>
             {{else}}
               <p>No se ha creado un carrito para este usuario.</p>

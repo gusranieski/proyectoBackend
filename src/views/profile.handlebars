@@ -8,13 +8,8 @@
     {{#if userData}}
       <h2>Usuario: {{userData.user}}</h2>
       <h2>Rol: {{userData.role}}</h2>
-      <h2>Carrito: {{userData.cart}}</h2>
-      <h2>Productos: {{userData.products}}</h2>
+      <h2>ID del Carrito: {{userData.cart}}</h2>
     {{/if}}
-    <div>
-      <form method="post" action="/api/sessions/logout">
-        <button type="submit">Logout!</button>
-      </form>
-    </div>
+
   </body>
 </html>

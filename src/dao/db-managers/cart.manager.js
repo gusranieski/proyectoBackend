@@ -88,25 +88,53 @@ export class CartManagerMongo {
     }
   };
 
-  updateCart = async (cartId, products) => {
+  emptyCart = async (req, cartId) => {
     try {
       const cart = await cartModel.findById(cartId);
-
+  
       if (!cart) {
         throw new Error(`Error: cart with id ${cartId} not found`);
       }
-
-      cart.products = products;
+  
+      cart.products = []; // Limpiar el array de productos del carrito
       await cart.save();
+  
+      req.logger.info("Carrito actualizado");
+      const updatedCart = await cartModel.findById(cartId);
+      return updatedCart;
+    } catch (error) {
+      throw error;
+    }
+  };  
 
+  updateCart = async (cartId, body) => {
+    try {
+      console.log(body);
+  
+      const cart = await cartModel.findById(cartId);
+  
+      if (!cart) {
+        throw new Error(`Error: cart with id ${cartId} not found`);
+      }
+  
+      // Verifica que "products" esté definido y sea un array
+      if (!body.products || !Array.isArray(body.products)) {
+        throw new Error("Invalid products array in the request body");
+      }
+  
+      // Iterar sobre el array de productos y agregar solo la referencia al producto en el carrito
+      cart.products = body.products.map(product => ({ idProduct: product.idProduct }));
+      await cart.save();
+  
       // Recupera el carrito con los datos actualizados
       const result = await cartModel.findById(cartId);
       return result;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   };
-
+  
   updateCartItemQuantity = async (cartId, productId, quantity) => {
     try {
       const cart = await cartModel.findById(cartId);

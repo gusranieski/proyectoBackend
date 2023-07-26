@@ -3,7 +3,7 @@ import {
   renderHome,
   renderRealTimeProducts,
   renderProducts,
-  renderCarts,
+  renderCart,
   renderLogin,
   renderSignup,
   renderProfile,
@@ -16,7 +16,7 @@ const viewsRouter = Router();
 viewsRouter.get("/", renderHome);
 viewsRouter.get("/real-time-products", renderRealTimeProducts);
 viewsRouter.get("/products", renderProducts);
-viewsRouter.get("/carts/:cid", renderCarts);
+viewsRouter.get("/carts/:cid", renderCart);
 viewsRouter.get("/login", renderLogin);
 viewsRouter.get("/signup", renderSignup);
 viewsRouter.get("/profile", renderProfile);

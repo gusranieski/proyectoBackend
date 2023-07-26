@@ -103,8 +103,11 @@ export const cartsController = {
       }
 
       const cart = await CartManager.addProductToCart(cartId, productId, quantity);
-      req.logger.info(`Producto con ID:${productId} agregado al carrito ID:${cartId}`)
-      return res.status(200).send({ status:"success", payload:cart });
+      req.logger.info(`Producto con ID:${productId} agregado al carrito ID:${cartId}`);
+      
+      return res.status(200).redirect("/carts/:cid");
+
+      // return res.status(200).send({ status:"success", payload:cart });
     } catch (error) {
       req.logger.error(error);
       res.status(500);
@@ -150,7 +153,8 @@ export const cartsController = {
     }
   },
 
-  async updateCart(req, res) {
+  // Método para actualizar el carrito con un nuevo array de productos
+  async updateCartWithProducts(req, res) {
     try {
       const cartId = req.params.cid;
       const products = req.body;
@@ -175,6 +179,31 @@ export const cartsController = {
     }
   },
 
+  // Método para vaciar el carrito del usuario
+  async emptyCart(req, res) {
+    try {
+      const cartId = req.params.cid;
+      const products = []; 
+
+      if (Number.isNaN(parseInt(cartId))) {
+        CustomError.createError({
+          name: "Cart param error",
+          cause: generateCartErrorParam(req.params.cid),
+          message: "Error al encontrar el carrito - Id incorrecto",
+          errorCode: EError.INVALID_PARAM,
+        });
+      }
+
+      const updatedCart = await CartManager.emptyCart(req, cartId, products);
+      req.logger.info("Carrito vaciado");
+      return res.status(200).send({ status: "success", payload: updatedCart });
+    } catch (error) {
+      req.logger.error(error);
+      res.status(500);
+      errorHandler(error, req, res);
+    }
+  },
+  
   async updateCartItemQuantity(req, res) {
     try {
       const cartId = req.params.cid;

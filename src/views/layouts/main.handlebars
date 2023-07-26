@@ -4,17 +4,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/index.css" />
-    <title>Document</title>
+    <title>Ecommerce</title>
   </head>
   <body>
-    <div>
+    <div class="nav-links">
       <a href="/">Home</a>
       <a href="/login">Iniciar sesión</a>
       <a href="/signup">Registrarse</a>
-      <a href="/profile">Perfil</a>
     </div>
     <div>
       {{#if userData}}
+        <div>
+          <a href="/profile">Perfil</a>
+          <a href="/products">Agregar productos al carrito</a>
+          <a href="/carts/:cid">Ver carrito</a>
+        </div>
         <form method="post" action="/api/sessions/logout">
           <button type="submit">Cerrar sesión</button>
         </form>

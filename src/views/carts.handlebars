@@ -1,22 +1,41 @@
-{{#each paginatedCarts.docs}}
-  <div>
-    <div>
-    <h1>Cart: {{_id}}</h1>
-    </div>
-      {{#each this.products}}
-      <h2>Product:</h2>
-    <ul>
-        <li>ID: {{this.idProduct._id}}</li>
-        <li>Quantity: {{this.quantity}}</li>
-        <li>Title: {{this.idProduct.title}}</li>
-        <li>Description: {{this.idProduct.description}}</li>
-        <li>Code: {{this.idProduct.code}}</li>
-        <li>Price: {{this.idProduct.price}}</li>
-        <li>Stock: {{this.idProduct.stock}}</li>
-        <li>Category: {{this.idProduct.category}}</li>
-        <li>Thumbnail: {{this.idProduct.thumbnail}}</li>
-        <li>Status: {{this.idProduct.status}}</li>
-    </ul>
-      {{/each}}
-  </div>
-{{/each}}
+<html>
+  <head>
+    <link rel="stylesheet" href="/css/cart.css" />
+    <title>Carrito de Compras</title>
+  </head>
+  <body>
+    <h1>Carrito de Compras</h1>
+    {{#if userData}}
+      <h2>Usuario: {{userData.user}}</h2>
+      <h2>Rol: {{userData.role}}</h2>
+      <h2>ID del Carrito: {{userData.cart}}</h2>
+    {{/if}}
+    {{#if currentCart}}
+      <div>
+        <h2>Productos en el carrito:</h2>
+        <div class="cart-list">
+          {{#each currentCart.products}}
+            <div class="product-card">
+              <h3>{{this.idProduct.title}}</h3>
+              <p>Descripción: {{this.idProduct.description}}</p>
+              <p>Código: {{this.idProduct.code}}</p>
+              <p>Precio: {{this.idProduct.price}}</p>
+              <p>Cantidad: {{this.quantity}}</p>
+              <div>
+                <button type="button" onclick="removeProduct('{{../currentCart._id}}', '{{this.idProduct._id}}')">ELIMINAR ❌</button>
+              </div>
+            </div>
+          {{/each}}
+        </div>
+            {{#if currentCart.products}}
+            <div class="btn-empty">
+              <button type="button" onclick="emptyCart('{{currentCart._id}}')">VACIAR CARRITO</button>
+            </div>
+            {{/if}}
+      </div>
+    {{else}}
+      <p>No tienes productos en tu carrito.</p>
+    {{/if}}
+    <script src="/js/cart.js"></script>
+  </body>
+</html>
