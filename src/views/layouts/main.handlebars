@@ -3,7 +3,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/index.css" />
+    <link rel="stylesheet" href="/css/main.css" />
     <title>Ecommerce</title>
   </head>
   <body>
@@ -11,16 +11,17 @@
       <a href="/">Home</a>
       <a href="/login">Iniciar sesión</a>
       <a href="/signup">Registrarse</a>
+      <a href="/admin">Admin Panel</a>
     </div>
     <div>
-      {{#if userData}}
-        <div>
+      {{#if userData }}
+        <div class="profile-links">
           <a href="/profile">Perfil</a>
           <a href="/products">Agregar productos al carrito</a>
           <a href="/carts/:cid">Ver carrito</a>
         </div>
-        <form method="post" action="/api/sessions/logout">
-          <button type="submit">Cerrar sesión</button>
+        <form class="form-logout" method="post" action="/api/sessions/logout">
+          <button class="btn-logout" type="submit">Cerrar sesión</button>
         </form>
       {{/if}}
     </div>

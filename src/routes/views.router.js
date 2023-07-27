@@ -9,7 +9,9 @@ import {
   renderProfile,
   renderForgotPassword,
   renderResetPassword,
+  renderAdminPanel,
 } from "../controllers/views.controller.js";
+import { checkRole } from "../middlewares/auth.js";
 
 const viewsRouter = Router();
 
@@ -22,5 +24,6 @@ viewsRouter.get("/signup", renderSignup);
 viewsRouter.get("/profile", renderProfile);
 viewsRouter.get("/forgot-password", renderForgotPassword);
 viewsRouter.get("/reset-password", renderResetPassword);
+viewsRouter.get("/admin", checkRole(["admin"]), renderAdminPanel);
 
 export default viewsRouter;

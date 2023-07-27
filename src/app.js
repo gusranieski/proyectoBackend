@@ -21,6 +21,7 @@ import mocksProductsRouter from "./routes/mock.products.router.js";
 import loggerRouter from "./routes/logger.router.js";
 import forgotRouter from "./routes/forgot.router.js";
 import resetRouter from "./routes/reset.router.js";
+import adminRouter from "./routes/admin.router.js";
 
 const app = express();
 
@@ -96,5 +97,6 @@ app.use("/mockingproducts", mocksProductsRouter);
 app.use(errorHandler);
 app.use("/api/sessions", forgotRouter);
 app.use("/api/sessions", resetRouter);
+app.use("/api/admin", adminRouter)
 
 export {app};

@@ -1,20 +1,29 @@
-<h1>Iniciar sesión</h1>
-{{message}}
-<div>
-  <form method="post" action="/api/sessions/login">
-    <input type="text" placeholder="Email" name="email" />
-    <br />
-    <br />
-    <input type="password" placeholder="Contraseña" name="password" />
-    <br />
-    <br />
-    <button type="submit">Loguearse</button>
-  </form>
-  <form method="get" action="/api/sessions/github">
-    <button type="submit">Loguearse con github</button>
-  </form>
-  <hr>
-  <a href="/forgot-password">
-    <button>Olvidé la contraseña</button>
-  </a>
-</div>
+<html>
+  <head>
+    <link rel="stylesheet" href="/css/login.css" />
+    <h1>Iniciar sesión</h1>
+    {{#if userData}}
+      <span>Sesión iniciada de {{userData.user}}!</span>
+    {{/if}}
+  </head>
+  <body>
+    {{!-- {{message}} --}}
+    <div class="login">
+      <form method="post" action="/api/sessions/login">
+        <input type="text" placeholder="Email" name="email" />
+        <br />
+        <br />
+        <input type="password" placeholder="Contraseña" name="password" />
+        <br />
+        <br />
+        <button class="btn-login" type="submit">Loguearse</button>
+      </form>
+      <form method="get" action="/api/sessions/github">
+        <button type="submit">Loguearse con github</button>
+      </form>
+      <a href="/forgot-password">
+        <button>Olvidé la contraseña</button>
+      </a>
+    </div>
+  </body>
+</html>

@@ -68,32 +68,32 @@ export const currentUserController = async (req, res) => {
       }
   };
   
-  export const premiumController = async(req,res) => {
-    try {
-      const userId = req.params.id;
-      // ver si existe el usuario en la db
-      const user = await userService.getUser(userId);
-      console.log("currentUserRole:", user);
-      const userRole = user.role;
-      //validar si el usuario ya subio todos los documentos, entonces puede ser un ususario premium
-      if(user.documents.length<3 && user.status !== "completo"){
-        return res.json({status:"error", message:"El usuario no ha subido todos los documentos"});
-      }
-      if(userRole === "usuario") {
-        user.role = "premium"
-      } else if(userRole === "premium") {
-        user.role = "usuario"
-      } else {
-        return res.json({ status:"error", message:"no es posible cambiar el rol del usuario" });
-      }
-      await userService.updateUser(user.id, user);
-      console.log("newUserRole:", user);
-      res.send({ status:"success", message:"rol modificado exitosamente"});
-    } catch (error) {
-      console.log(error.message);
-      res.json({ status:"error", message:"Hubo un error al cambiar el rol del usuario" });
-    }
-  }
+  // export const premiumController = async(req,res) => {
+  //   try {
+  //     const userId = req.params.id;
+  //     // ver si existe el usuario en la db
+  //     const user = await userService.getUser(userId);
+  //     console.log("currentUserRole:", user);
+  //     const userRole = user.role;
+  //     //validar si el usuario ya subio todos los documentos, entonces puede ser un ususario premium
+  //     if(user.documents.length<3 && user.status !== "completo"){
+  //       return res.json({status:"error", message:"El usuario no ha subido todos los documentos"});
+  //     }
+  //     if(userRole === "usuario") {
+  //       user.role = "premium"
+  //     } else if(userRole === "premium") {
+  //       user.role = "usuario"
+  //     } else {
+  //       return res.json({ status:"error", message:"no es posible cambiar el rol del usuario" });
+  //     }
+  //     await userService.updateUser(user.id, user);
+  //     console.log("newUserRole:", user);
+  //     res.send({ status:"success", message:"rol modificado exitosamente"});
+  //   } catch (error) {
+  //     console.log(error.message);
+  //     res.json({ status:"error", message:"Hubo un error al cambiar el rol del usuario" });
+  //   }
+  // }
   
   export const uploaderDocsController = async(req,res) => {
     try {

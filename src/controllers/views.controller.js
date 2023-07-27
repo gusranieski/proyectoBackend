@@ -1,6 +1,7 @@
 import { ProductManager } from "../dao/factory.js";
 import productModel from "../dao/models/product.model.js";
 import cartModel from "../dao/models/cart.model.js";
+import userModel from "../dao/models/user.model.js";
 
 
 export const renderHome = async (req, res) => {
@@ -43,15 +44,17 @@ export const renderCart = async (req, res) => {
 };
 
 export const renderLogin = (req, res) => {
-  res.render("login");
+  const userData = req.user ? { user: req.user.email } : null; 
+  res.render("login", { userData });
 };
 
 export const renderSignup = (req, res) => {
-  res.render("signup");
+  const userData = req.user ? { user: req.user.email } : null; 
+  res.render("signup", { userData });
 };
 
 export const renderProfile = (req, res) => {
-  const userData = req.user ? { user: req.user.email, role: req.user.role, cart: req.user.cart._id, products: req.user.cart.products._id } : null;
+  const userData = req.user ? { user: req.user.email, role: req.user.role, cart: req.user.cart._id } : null;
   res.render("profile", { userData });
 };
 
@@ -63,6 +66,19 @@ export const renderResetPassword = (req, res) => {
   const token = req.query.token;
   res.render("reset", {token});
 };
+
+export const renderAdminPanel = async (req, res) => {
+  try {
+    const users = await userModel.find({}, { _id: 1, full_name: 1, email: 1, role: 1 }).lean();
+    const userData = req.user; 
+    res.render("admin", { users, userData });
+  } catch (error) {
+    console.log("Error al renderizar la vista de administración", error);
+    res.status(500).send("Hubo un error al renderizar la vista de administración.");
+  }
+};
+
+
 
 /* renderiza una cantidad de carritos */
 
