@@ -1,15 +1,7 @@
-<html>
-  <head>
-    <link rel="stylesheet" href="" />
-  </head>
-  <body>
-    <h1>Perfil:</h1>
+<h1>Perfil:</h1>
 
-    {{#if userData}}
-      <h2>Usuario: {{userData.user}}</h2>
-      <h2>Rol: {{userData.role}}</h2>
-      <h2>ID del Carrito: {{userData.cart}}</h2>
-    {{/if}}
-
-  </body>
-</html>
+{{#if userData}}
+  <h2>Usuario: {{userData.user}}</h2>
+  <h2>Rol: {{userData.role}}</h2>
+  <h2>ID del Carrito: {{userData.cart}}</h2>
+{{/if}}

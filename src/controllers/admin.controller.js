@@ -39,6 +39,7 @@ export const deleteUser = async (req, res) => {
 
   try {
     const user = await userService.getUser(id);
+    console.log(user);
     if (!user) {
       return res.status(404).send("Usuario no encontrado");
     }

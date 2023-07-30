@@ -68,33 +68,6 @@ export const currentUserController = async (req, res) => {
       }
   };
   
-  // export const premiumController = async(req,res) => {
-  //   try {
-  //     const userId = req.params.id;
-  //     // ver si existe el usuario en la db
-  //     const user = await userService.getUser(userId);
-  //     console.log("currentUserRole:", user);
-  //     const userRole = user.role;
-  //     //validar si el usuario ya subio todos los documentos, entonces puede ser un ususario premium
-  //     if(user.documents.length<3 && user.status !== "completo"){
-  //       return res.json({status:"error", message:"El usuario no ha subido todos los documentos"});
-  //     }
-  //     if(userRole === "usuario") {
-  //       user.role = "premium"
-  //     } else if(userRole === "premium") {
-  //       user.role = "usuario"
-  //     } else {
-  //       return res.json({ status:"error", message:"no es posible cambiar el rol del usuario" });
-  //     }
-  //     await userService.updateUser(user.id, user);
-  //     console.log("newUserRole:", user);
-  //     res.send({ status:"success", message:"rol modificado exitosamente"});
-  //   } catch (error) {
-  //     console.log(error.message);
-  //     res.json({ status:"error", message:"Hubo un error al cambiar el rol del usuario" });
-  //   }
-  // }
-  
   export const uploaderDocsController = async(req,res) => {
     try {
       const userId = req.params.id;
@@ -129,4 +102,52 @@ export const currentUserController = async (req, res) => {
       console.log(error.message);
       res.json({ status:"error", message:"Hubo un error al cargar los documentos" });
     }
-  }
+  };
+
+  export const deleteInactiveUsersController = async (req, res) => {
+    try {
+      // Obtener la fecha actual y la fecha hace 2 días
+      const currentDate = new Date();
+      const twoDaysAgo = new Date();
+      twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+  
+      console.log("Current Date:", currentDate);
+      console.log("Two Days Ago:", twoDaysAgo);
+
+    // Obtener todos los usuarios
+    const allUsers = await userService.getUsers();
+
+    // Filtrar los usuarios inactivos que no hayan tenido conexión en los últimos 2 días
+    const inactiveUsers = allUsers.filter((user) => new Date(user.last_connection) < twoDaysAgo);
+    console.log("Inactive Users:", inactiveUsers);
+  
+      // Eliminar a los usuarios inactivos
+      for (const user of inactiveUsers) {
+        console.log("Deleting user:", user);
+  
+        await userService.deleteUser(user.id);
+  
+        console.log("User deleted:", user);
+        
+        const emailTemplate = `<div>
+        <h1>Hola ${user.first_name}!!</h1>
+        <p>Tu cuenta ha sido eliminada debido a la falta de actividad. Si deseas volver a utilizar nuestros servicios, por favor registrate nuevamente.</p>
+        <a href="http://localhost:8080/signup">Haz click en éste enlace para volver a registrarte</a>
+        </div>`;
+        // Enviar correo electrónico de notificación al usuario eliminado
+        const emailData = await transport.sendMail({
+          from: "Backend ecommerce de Gustavo",
+          to: user.email,
+          subject: "Eliminación de cuenta por inactividad",
+          html: emailTemplate,
+        });
+        console.log("Correo enviado:", emailData);
+      }
+  
+      res.json({ status: "success", message: "Usuarios inactivos eliminados correctamente" });
+    } catch (error) {
+      console.error("Error al eliminar usuarios inactivos", error);
+      res.status(500).json({ status: "error", message: "Hubo un error al eliminar usuarios inactivos" });
+    }
+  };
+  

@@ -4,6 +4,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/home.css" />
+    <link rel="stylesheet" href="/css/login.css" />
+    <link rel="stylesheet" href="/css/products.css" />
+    <link rel="stylesheet" href="/css/cart.css" />
+    <link rel="stylesheet" href="/css/admin.css">
     <title>Ecommerce</title>
   </head>
   <body>
@@ -14,7 +19,7 @@
       <a href="/admin">Admin Panel</a>
     </div>
     <div>
-      {{#if userData }}
+      {{#if userData}}
         <div class="profile-links">
           <a href="/profile">Perfil</a>
           <a href="/products">Agregar productos al carrito</a>
@@ -26,5 +31,7 @@
       {{/if}}
     </div>
     {{{body}}}
+    <script src="/js/cart.js"></script>
+    <script src="/js/admin.js"></script>
   </body>
 </html>

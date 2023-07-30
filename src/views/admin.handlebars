@@ -1,67 +1,14 @@
-{{!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel</title>
-</head>
-<body>
-  <h1>Información de cada usuario</h1>
-
-  {{#each users}}
-    <div>
-      <ul> 
-        <li>Nombre: "{{full_name}}"</li>
-        <li>Email: "{{email}}"</li>
-        <li>Rol: "{{role}}"</li>
-        <form method="put" action="/api/users/premium/{{id}}">
-          <button>Cambiar de rol</button>
-        </form>
-        {{#if isUserRole this.role}}
-          <form method="post" action="/admin/update-role/{{this.id}}">
-            <select name="role">
-              <option value="usuario" {{isSelectedRole this.role "usuario"}}>Usuario</option>
-              <option value="premium" {{isSelectedRole this.role "premium"}}>Premium</option>
-            </select>
-            <button type="submit">Cambiar de rol</button>
-          </form>
-        {{/if}}
-      </ul>
-    </div>
-  {{/each}}
-
-</body>
-</html> --}}
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel</title>
-</head>
-<body>
-  <h1>Información de cada usuario</h1>
-
-  {{#each users}}
-    <div>
-      <ul> 
-        <li>Nombre: {{full_name}}</li>
-        <li>Email: {{email}}</li>
-        <li>Rol: {{role}}</li>
-        <form method="put" action="/api/users/premium/{{_id}}">
-          <select name="role">
-            <option value="usuario" >Usuario</option>
-            <option value="premium" >Premium</option>
-          </select>
-          <button type="submit">Cambiar de rol</button>
-        </form>
-      </ul>
-    </div>
-  {{/each}}
-
-</body>
-</html>
-
+<h1>Información de cada usuario</h1>
+{{#each users}}
+  <div class="users-list">
+    <ul>
+      <li><span>Nombre:</span> {{full_name}}</li>
+      <li><span>Email:</span> {{email}}</li>
+      <div class="btn-role">
+        <li id="message-{{_id}}"><span>Rol:</span> {{role}}</li>
+        <button type="button" onclick="changeUserRole('{{_id}}')">Cambiar de rol</button>
+      </div>
+      <button type="button" onclick="deleteUser('{{_id}}')">Eliminar usuario ❌</button>
+    </ul>
+  </div>
+{{/each}}

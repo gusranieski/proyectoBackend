@@ -1,9 +1,3 @@
-<html>
-  <head>
-    <link rel="stylesheet" href="/css/cart.css" />
-    <title>Carrito de Compras</title>
-  </head>
-  <body>
     <h1>Carrito de Compras</h1>
     {{#if userData}}
       <h2>Usuario: {{userData.user}}</h2>
@@ -16,7 +10,7 @@
         <h2>Productos en el carrito:</h2>
         <div class="cart-list">
           {{#each currentCart.products}}
-            <div class="product-card">
+            <div class="product-cart">
               <h3>{{this.idProduct.title}}</h3>
               <p>Descripción: {{this.idProduct.description}}</p>
               <p>Código: {{this.idProduct.code}}</p>
@@ -37,6 +31,3 @@
     {{else}}
       <p>No tienes productos en tu carrito.</p>
     {{/if}}
-    <script src="/js/cart.js"></script>
-  </body>
-</html>

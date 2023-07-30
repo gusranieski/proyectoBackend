@@ -1,4 +1,8 @@
-import { CreateUserDto, GetUserDto, GetAllUsersDto } from "../dao/dto/user.dto.js";
+import {
+  CreateUserDto,
+  GetUserDto,
+  GetAllUsersDto,
+} from "../dao/dto/user.dto.js";
 import userModel from "../dao/models/user.model.js";
 
 export class UserRepository {
@@ -6,9 +10,8 @@ export class UserRepository {
 
   async getUsers() {
     try {
-      const users = await userModel.find();
-      const AllUsersDto = users.map(user => new GetAllUsersDto(user));
-      return AllUsersDto;
+      const allUsers = await userModel.find();
+      return allUsers;
     } catch (error) {
       throw new Error(`Error al obtener los usuarios: ${error}`);
     }
@@ -36,30 +39,42 @@ export class UserRepository {
 
   async updateUser(userId, user) {
     try {
-      const updatedUser = await userModel.findByIdAndUpdate(userId, user, { new: true });
+      const updatedUser = await userModel.findByIdAndUpdate(userId, user, {
+        new: true,
+      });
       const userDto = new GetUserDto(updatedUser);
       return userDto;
     } catch (error) {
       throw new Error(`Error al actualizar el usuario: ${error}`);
     }
   }
-  
 
   async getUserByEmail(email) {
-  try {
-    const user = await userModel.findOne({ email });
-    if (!user) {
-      return null;
+    try {
+      const user = await userModel.findOne({ email });
+      if (!user) {
+        return null;
+      }
+      const userDto = new GetUserDto(user);
+      return userDto;
+    } catch (error) {
+      throw new Error(`Error al obtener el usuario: ${error}`);
     }
-    const userDto = new GetUserDto(user);
-    return userDto;
-  } catch (error) {
-    throw new Error(`Error al obtener el usuario: ${error}`);
   }
-}
+
+  async deleteUser(userId) {
+    try {
+      const deletedUser = await userModel.findByIdAndDelete(userId);
+      if (!deletedUser) {
+        throw new Error("Usuario no encontrado");
+      }
+      return deletedUser;
+    } catch (error) {
+      throw new Error(`Error al eliminar el usuario: ${error}`);
+    }
+  }
 
 }
-
 
 // import { CreateUserDto, GetUserDto } from "../dao/dto/user.dto.js";
 
@@ -74,7 +89,7 @@ export class UserRepository {
 //     };
 
 //     async createUser(user){
-//         const userDto = new CreateUserDto(user); 
+//         const userDto = new CreateUserDto(user);
 //         const userCreated = await this.dao.post(userDto);
 //         return userCreated;
 //     };
@@ -87,9 +102,6 @@ export class UserRepository {
 //         return result;
 //     };
 // }
-
-
-
 
 // import { CreateUserDto, GetUserDto } from "../dao/dto/user.dto.js";
 
@@ -121,6 +133,3 @@ export class UserRepository {
 //     }
 //   }
 // }
-
-
-

@@ -6,7 +6,7 @@
     align-items: center;
 }
 
-.product-card {
+.product-cart {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -17,16 +17,16 @@
     width: 90%;
 }
 
-.product-card:hover {
+.product-cart:hover {
     background-color: thistle;
 }
 
-.product-card p {
+.product-cart p {
     padding: 0;
     margin: 0;
 }
 
-.product-card button {
+.product-cart button {
     padding: 10px;
     margin: 0;
     border-radius: 5px;
@@ -34,7 +34,7 @@
     cursor: pointer;
 }
 
-.product-card button:hover {
+.product-cart button:hover {
     background-color: tomato;
     color: white;
 }

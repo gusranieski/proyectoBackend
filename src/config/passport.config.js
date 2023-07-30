@@ -21,7 +21,6 @@ const initializedPassport = () => {
         },
         async (req, username, password, done) => {
             try {
-                console.log(req.file);
                 const {first_name, last_name, age}= req.body
                 if(!first_name || !last_name || !age) {
                     CustomError.createError({
@@ -54,7 +53,7 @@ const initializedPassport = () => {
                     password: createHash(password),
                     cart: cart._id, // Asigna el ID del carrito al usuario
                     role: role,
-                    avatar: req.file.filename
+                    avatar: req.file ? req.file.filename : null,
                 };
                 const newUserCreated = await userModel.create(newUser);
                 req.logger.info("se registró un nuevo usuario");
@@ -87,7 +86,7 @@ const initializedPassport = () => {
                 }
                 user.role = role;
                 // modificar última conexión del usuario
-                user.last_connection = new Date().toLocaleString();
+                user.last_connection = new Date();
                 const userUpdated = await userModel.findByIdAndUpdate(user._id, user);
                 return done(null, userUpdated);
             } catch (error) {
@@ -104,12 +103,12 @@ passport.use("githubSignup", new GithubStrategy(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        const { displayName } = profile;
+        const { displayName, emails } = profile;
 
-        const cart = new cartModel(); // Crea un nuevo carrito
+        const cart = new cartModel(); 
         await cart.save();
     
-        const userExists = await userModel.findOne({ email: profile.username });
+        const userExists = await userModel.findOne({ email: profile.emails[0].value });
         if (userExists) {
           return done(null, userExists);
         }
@@ -124,12 +123,12 @@ passport.use("githubSignup", new GithubStrategy(
           last_name: displayName, 
           full_name: displayName,
           age: null, 
-          email: profile.username,
+          email: emails[0].value,
           password: createHash(profile.id),
           cart: cart._id,
           role: role,
         };
-    
+
         const newUserCreated = await userModel.create(newUser);
         return done(null, newUserCreated);
       } catch (error) {
