@@ -5,7 +5,8 @@ import { CustomError } from "../services/customError.js";
 import { EError } from "../enums/EError.js";
 import { errorHandler } from "../middlewares/errorHandler.js";
 import { generateProductErrorInfo, updateProductErrorInfo, generateProductErrorParam } from "../services/productError.js";
-
+import transport from "../config/gmail.js";
+import { userService } from "../repository/index.js";
 // const manager = new ProductManager();
 
 export const productsController = {
@@ -159,8 +160,23 @@ export const productsController = {
       const userId = req.user.email;
   
       if (req.user.role === "premium" && owner == userId || req.user.role === "admin") {
+
         await ProductManager.deleteProduct(id);
         req.io.emit("delete-product", product);
+
+        // Obtiene el usuario propietario del producto
+        const ownerUser = await userService.getUserByEmail(owner);
+
+        // Envía el correo de notificación al usuario premium
+        if (ownerUser && ownerUser.role === "premium") {
+          const mailOptions = await transport.sendMail({
+            from: "Backend ecommerce de Gustavo",
+            to: owner,
+            subject: "Eliminación de producto",
+            text: `El producto ${product.title} ha sido eliminado de tu lista.`,
+          });
+          console.log("Correo enviado del producto eliminado:", mailOptions);
+        }
         return res.send({ message: `Producto con id ${id} eliminado correctamente`, products: product });
       } else {
         res.status(403).send({ error: "No tienes permiso para borrar este producto" });
@@ -177,5 +193,4 @@ export const productsController = {
       errorHandler(error, req, res);
     }
   }
-
 };

@@ -26,6 +26,7 @@ export const updateUserRole = async(req,res) => {
       } else {
         return res.json({ status:"error", message:"no es posible cambiar el rol del usuario" });
       }
+      // Actualiza el rol en la base de datos
       await userService.updateUser(user.id, user);
       res.send({ status:"success", message:`rol modificado exitosamente a: ${user.role}`});
     } catch (error) {

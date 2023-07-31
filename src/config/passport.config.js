@@ -80,11 +80,7 @@ const initializedPassport = () => {
                 if (!isValidPassword(user, password)) {
                     return done(null, false);
                 }
-                let role = "usuario";
-                if (username === adminUser && password === adminPass) {
-                    role = "admin";
-                }
-                user.role = role;
+
                 // modificar última conexión del usuario
                 user.last_connection = new Date();
                 const userUpdated = await userModel.findByIdAndUpdate(user._id, user);
