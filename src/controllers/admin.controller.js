@@ -1,4 +1,5 @@
 import { userService } from "../repository/index.js";
+import { CartManager } from "../dao/factory.js";
 
 export const getAllUsers = async (req, res) => {
   try {
@@ -44,6 +45,8 @@ export const deleteUser = async (req, res) => {
     if (!user) {
       return res.status(404).send("Usuario no encontrado");
     }
+    const cartId = user.cart;
+    await CartManager.deleteCart(cartId);
     await userService.deleteUser(id);
     return res.status(200).send("Usuario eliminado exitosamente");
   } catch (error) {

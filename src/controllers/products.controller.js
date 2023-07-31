@@ -1,4 +1,3 @@
-// import { ProductManager } from "../dao/index.js";
 import { ProductManager } from "../dao/factory.js";
 import productModel from "../dao/models/product.model.js";
 import { CustomError } from "../services/customError.js";
@@ -7,7 +6,6 @@ import { errorHandler } from "../middlewares/errorHandler.js";
 import { generateProductErrorInfo, updateProductErrorInfo, generateProductErrorParam } from "../services/productError.js";
 import transport from "../config/gmail.js";
 import { userService } from "../repository/index.js";
-// const manager = new ProductManager();
 
 export const productsController = {
   
@@ -77,12 +75,6 @@ export const productsController = {
       if (!owner) {
         owner = "admin";
       }
-
-      const existingProduct = await productModel.findOne({ code });
-      if (existingProduct) {
-        req.logger.info("El código del producto ya está en uso");
-        return res.status(400).send({ error: "El código del producto ya está en uso" });
-      }
       
       const product = {
         title,
@@ -95,17 +87,25 @@ export const productsController = {
         status,
         owner,
       };
+
+      try {
+        const newProduct = await ProductManager.addProduct(product);
+        req.logger.info("Se creó un nuevo producto");
   
-      const newProduct = await ProductManager.addProduct(product);
-      req.logger.info("se creó un nuevo producto");
-  
-      if (!newProduct) {
-        res.status(400).send({ error: 'Error al agregar el producto' });
-        return;
+        req.io.emit("new-product", newProduct);
+        res.status(201).send({ status: "success", payload: newProduct });
+      } catch (error) {
+        if (error.code === 11000) {
+          // El código del producto ya está en uso (error de duplicado)
+          req.logger.warning("El código del producto ya está en uso");
+          res.status(400).send({ error: "El código del producto ya está en uso" });
+        } else {
+          // Otro tipo de error
+          req.logger.error("Error al agregar el producto");
+          res.status(500);
+          errorHandler(error, req, res);
+        }
       }
-  
-      req.io.emit("new-product", newProduct);
-      res.status(201).send({ status: "success", payload: newProduct });
     } catch (error) {
       req.logger.error("Error al agregar el producto");
       res.status(500);
