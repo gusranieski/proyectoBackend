@@ -15,6 +15,7 @@ cartsRouter.put("/:cid/emptycart", cartsController.emptyCart);
 cartsRouter.put("/:cid", cartsController.updateCartWithProducts);
 cartsRouter.put("/:cid/products/:id", cartsController.updateCartItemQuantity);
 cartsRouter.delete("/:cid", cartsController.deleteCart);
-cartsRouter.post ("/:cid/purchase", cartsController.getPurchase);
+cartsRouter.post("/:cid/purchase", cartsController.getPurchase);//ruta para generar el ticket
+cartsRouter.get("/purchase/:ticketId", cartsController.showTicket);//ruta para obtener y renderizar el ticket
 
 export default cartsRouter;

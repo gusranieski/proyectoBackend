@@ -8,12 +8,18 @@ const ticketsSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  purchase_datetime: String,
+  purchase_datetime: Date,
   amount: Number,
   purchaser: {
     type: String,
     required: true,
   },
+  cartId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "carts", 
+  },
 });
 
-export const ticketsModel = mongoose.model(ticketsCollection, ticketsSchema);
+const ticketsModel = mongoose.model(ticketsCollection, ticketsSchema);
+
+export default ticketsModel;

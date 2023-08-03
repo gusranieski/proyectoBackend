@@ -1,6 +1,6 @@
 import cartModel from "../models/cart.model.js";
 import productModel from "../models/product.model.js";
-import { ticketsModel } from "../models/ticket.model.js";
+import ticketsModel from "../models/ticket.model.js";
 import { v4 as uuidv4 } from 'uuid';
 import { ProductManagerMongo } from "./product.manager.js";
 
@@ -195,9 +195,10 @@ export class CartManagerMongo {
 
       const newTicket = {
         code: uuidv4(),
-        purchase_datetime: new Date().toLocaleString(),
+        purchase_datetime: new Date(),
         amount: totalAmount,
-        purchaser: userEmail
+        purchaser: userEmail,
+        cartId: cart._id, // Asigna el ObjectId del carrito al ticket
       };
       const ticketCreated = await ticketsModel.create(newTicket);
 
@@ -215,5 +216,14 @@ export class CartManagerMongo {
     } catch (error) {
       throw error;
     }
-  }
-}
+  };
+
+  getTicketById = async (ticketId) => {
+    try {
+      const ticket = await ticketsModel.findById(ticketId);
+      return ticket.toObject();
+    } catch (error) {
+      throw error;
+    }
+  };
+};

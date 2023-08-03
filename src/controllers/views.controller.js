@@ -1,8 +1,8 @@
-import { ProductManager } from "../dao/factory.js";
+import { ProductManager, CartManager } from "../dao/factory.js";
 import productModel from "../dao/models/product.model.js";
 import cartModel from "../dao/models/cart.model.js";
 import userModel from "../dao/models/user.model.js";
-
+import ticketsModel from "../dao/models/ticket.model.js";
 
 export const renderHome = async (req, res) => {
   const products = await ProductManager.getProducts();
@@ -78,18 +78,26 @@ export const renderAdminPanel = async (req, res) => {
   }
 };
 
+export const renderPurchase = async (req, res) => {
+  try {
+    const ticketId = req.params.ticketId;
+    const ticket = await ticketsModel.findById(ticketId).lean();
 
+    if (!ticket) {
+      console.log("No se encontraron los detalles del ticket");
+      return res.status(404).send("No se encontraron los detalles del ticket.");
+    }
 
-/* renderiza una cantidad de carritos */
+    const purchaseData = {
+      code: ticket.code,
+      purchase_datetime: ticket.purchase_datetime.toLocaleString(),
+      amount: ticket.amount.toLocaleString(),
+      purchaser: ticket.purchaser,
+    };
 
-// export const renderCarts = async (req, res) => {
-//   const { limit = 1, lean = true } = req.query;
-//   const options = {
-//     limit,
-//     lean,
-//   };
-
-//   const paginatedCarts = await cartModel.paginate({}, options);
-
-//   res.render("carts", { paginatedCarts });
-// };
+    res.render("purchase", { purchaseData });
+  } catch (error) {
+    console.log("Error al renderizar la vista de la compra", error);
+    res.status(500).send("Hubo un error al renderizar la vista de la compra.");
+  }
+};

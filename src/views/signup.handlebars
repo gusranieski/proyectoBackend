@@ -1,5 +1,9 @@
 <h1>Crea tu Usuario</h1>
-<div>
+{{#if userData}}
+  <span>Sesión iniciada de {{userData.user}}!</span>
+{{/if}}
+
+<div class="signup">
   <form method="post" action="/api/sessions/signup" enctype="multipart/form-data">
     <input type="text" placeholder="Nombre" name="first_name" />
     <br />
@@ -19,9 +23,9 @@
     <input type="file" placeholder="Imágen de perfil" name="avatar" />
     <br />
     <br />
-    <button type="submit">Registrate</button>
+    <button class="btn-signup" type="submit">Registrate</button>
   </form>
   <form method="get" action="/api/sessions/github">
-    <button type="submit">registrarse con github</button>
+    <button class="btn-signup" type="submit">registrarse con github</button>
   </form>
 </div>

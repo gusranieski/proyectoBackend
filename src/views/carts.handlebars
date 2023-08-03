@@ -14,20 +14,32 @@
               <h3>{{this.idProduct.title}}</h3>
               <p>Descripción: {{this.idProduct.description}}</p>
               <p>Código: {{this.idProduct.code}}</p>
-              <p>Precio: {{this.idProduct.price}}</p>
-              <p>Cantidad: {{this.quantity}}</p>
+              <p>Precio: 💲{{this.idProduct.price}}</p>
+              <p>Stock disponible: {{this.idProduct.stock}}</p>
+              <p>Cantidad: 
+                <input type="number" id="quantity-{{this.idProduct._id}}" value="{{this.quantity}}" min="1" max="100">
+              </p>
               <div>
+                <button type="button" onclick="updateCartItemQuantity('{{../currentCart._id}}', '{{this.idProduct._id}}', document.getElementById('quantity-{{this.idProduct._id}}').value)">Confirmar cantidad ✅</button>
                 <button type="button" onclick="removeProduct('{{../currentCart._id}}', '{{this.idProduct._id}}')">ELIMINAR ❌</button>
               </div>
             </div>
+            <div id="success-message"></div>
+            <div id="error-message"></div>
           {{/each}}
         </div>
             {{#if currentCart.products}}
-            <div class="btn-empty">
-              <button type="button" onclick="emptyCart('{{currentCart._id}}')">VACIAR CARRITO</button>
+            <div class="btns-container">
+              <form class="btn-purchase" method="post" action="/api/carts/{{currentCart._id}}/purchase">
+                <button class="btn-purchase" type="submit">COMPRAR</button>
+              </form>
+              <div class="btn-empty">
+                <button type="button" onclick="emptyCart('{{currentCart._id}}')">VACIAR CARRITO</button>
+              </div>
             </div>
             {{/if}}
       </div>
     {{else}}
       <p>No tienes productos en tu carrito.</p>
     {{/if}}
+    <a href="/products">Volver a productos</a>

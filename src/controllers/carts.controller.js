@@ -227,6 +227,13 @@ export const cartsController = {
         });
       };
 
+      // Obtener el producto específico del carrito utilizando su ID
+      const product = await ProductManager.getProductById(productId);
+
+      if (product.stock === 0) {
+        return res.status(400).json(`El producto ${product.title} está agotado, no hay más stock disponible`);
+      }
+
       const updatedCart = await CartManager.updateCartItemQuantity(
         cartId,
         productId,
@@ -268,33 +275,46 @@ export const cartsController = {
     }
   },
   
-
   async getPurchase(req, res) {
     try {
       const { cid } = req.params;
-
-      const cartId = req.params.cid;
-      if (Number.isNaN(parseInt(cartId))) {
-        CustomError.createError({
-          name: "Cart param error",
-          cause: generateCartErrorParam(req.params.cid),
-          message: "Error al encontrar el carrito - Id incorrecto",
-          errorCode: EError.INVALID_PARAM,
-        });
-      };
       const cart = await CartManager.getCartById(cid);
-
-      if (cart) {
-        const purchaseResult = await CartManager.getTicket(cart, req.user.email);
-
-        req.logger.info("Compra realizada exitósamente");
-        res.status(200).send({ status: "success", payload: purchaseResult });
-      } else {
-        res.send("El carrito no se encuentra");
+  
+      if (!cart) {
+        return res.send("El carrito no se encuentra");
       }
+  
+      // Verifica si la cantidad solicitada es mayor que el stock disponible
+      for (const product of cart.products) {
+        const productDB = await ProductManager.getProductById(product.idProduct);
+        if (product.quantity > productDB.stock) {
+          req.logger.warning(`No hay suficiente stock para el producto: ${product.idProduct.title}`);
+          return res.status(400).send(`No hay suficiente stock para el producto: ${product.idProduct.title}`);
+        }
+      }
+  
+      const purchaseResult = await CartManager.getTicket(cart, req.user.email);
+      const ticketId = purchaseResult.ticket._id;
+      req.logger.info("Compra realizada exitósamente");
+      res.status(200).redirect(`/purchase/${ticketId}`);
     } catch (error) {
       res.status(500);
       errorHandler(error, req, res);
+    }
+  },
+  // Obtiene el ID del ticket desde los parámetros de la URL
+  async showTicket(req, res) {
+    try {
+      const ticketId = req.params.ticketId; 
+      const ticketResult = await CartManager.getTicketById(ticketId);
+
+      if (!ticketResult) {
+        return res.status(404).json({ error: "El ticket no se encuentra" });
+      }
+      res.status(200).send({ status:"success", payload: ticketResult });
+    } catch (error) {
+      req.logger.error(error);
+      res.status(500).json({ error: "Error al obtener el ticket" });
     }
   },
 };

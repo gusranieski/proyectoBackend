@@ -8,6 +8,7 @@ import { CustomError } from "../services/customError.js";
 import { EError } from "../enums/EError.js";
 import { generateUserErrorInfo } from "../services/userErrorInfo.js";
 import cartModel from "../dao/models/cart.model.js";
+import { mailUserController } from "../controllers/users.controller.js";
 
 const adminUser = options.auth.account
 const adminPass = options.auth.pass
@@ -57,6 +58,7 @@ const initializedPassport = () => {
                 };
                 const newUserCreated = await userModel.create(newUser);
                 req.logger.info("se registró un nuevo usuario");
+                await mailUserController(newUserCreated); // Envía correo de bienvenida
                 return done(null, newUserCreated); 
             } catch (error) {
                 req.logger.error("registro inválido");
@@ -126,6 +128,7 @@ passport.use("githubSignup", new GithubStrategy(
         };
 
         const newUserCreated = await userModel.create(newUser);
+        await mailUserController(newUserCreated); // Envía correo de bienvenida
         return done(null, newUserCreated);
       } catch (error) {
         console.log(error);

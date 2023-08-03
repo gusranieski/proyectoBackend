@@ -1,0 +1,18 @@
+h1 {
+    display: flex;
+    justify-content: center;
+}
+
+span {
+    font-weight: bold;
+}
+
+.purchase-detail {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: aliceblue;
+    padding: 70px 20;
+    height: fit-content;
+    margin: 0 500px;
+}

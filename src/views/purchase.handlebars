@@ -1,0 +1,13 @@
+<h1>Detalles de la compra:</h1>
+{{#if purchaseData}}
+  <div class="purchase-detail">
+    <p><span>Código de compra:</span> {{purchaseData.code}}</p>
+    <p><span>Fecha y hora de compra:</span> 📅{{purchaseData.purchase_datetime}}</p>
+    <p><span>Monto total:</span> 💲{{purchaseData.amount}}</p>
+    <p><span>Comprador:</span> 📧{{purchaseData.purchaser}}</p>
+    <h2>Graciar por tu compra!</h2>
+  </div>
+{{else}}
+  <p>No se encontraron detalles de compra.</p>
+{{/if}}
+<a href="/products">Volver a productos</a>

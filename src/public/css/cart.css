@@ -39,9 +39,11 @@
     color: white;
 }
 
-.btn-empty {
+.btns-container {
     display: flex;
     justify-content: flex-end;
+    gap: 15px;
+    padding-top: 40px;
 }
 
 .btn-empty button {
@@ -54,5 +56,18 @@
 }
 
 .btn-empty button:hover {
+    background-color: red;
+}
+
+.btn-purchase button {
+    border-style: none;
+    padding: 15px;
+    border-radius: 5px;
+    color: white;
+    background-color: yellowgreen;
+    cursor: pointer;
+}
+
+.btn-purchase button:hover {
     background-color: red;
 }
