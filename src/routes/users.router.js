@@ -23,7 +23,7 @@ usersRouter.post("/mail", mailUserController);
 usersRouter.post("/sms", smsUserController);
 
 // Ruta para cargar los documentos del usuario
-usersRouter.put("/:id/documents", checkAuthenticated, uploaderDocument.fields([{ name: "identificacion", maxCount: 1 },{ name: "domicilio", maxCount: 1 },{ name: "estadoDeCuenta", maxCount: 1 },]), uploaderDocsController);
+usersRouter.post("/:id/documents", checkAuthenticated, uploaderDocument.fields([{ name: "identificacion", maxCount: 1 },{ name: "domicilio", maxCount: 1 },{ name: "estadoDeCuenta", maxCount: 1 },]), uploaderDocsController);
 
 // Ruta DELETE para eliminar usuarios inactivos
 usersRouter.delete("/deleteInactive", deleteInactiveUsersController);

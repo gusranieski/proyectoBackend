@@ -54,7 +54,7 @@ export const renderSignup = (req, res) => {
 };
 
 export const renderProfile = (req, res) => {
-  const userData = req.user ? { user: req.user.email, role: req.user.role, cart: req.user.cart._id } : null;
+  const userData = req.user ? { user: req.user.email, role: req.user.role, cart: req.user.cart._id, id: req.user._id } : null;
   res.render("profile", { userData });
 };
 

@@ -4,4 +4,33 @@
   <h2>Usuario: {{userData.user}}</h2>
   <h2>Rol: {{userData.role}}</h2>
   <h2>ID del Carrito: {{userData.cart}}</h2>
+  <form method="post" action="/api/users/{{userData.id}}/documents" enctype="multipart/form-data">
+    <br />
+    <br />
+    <label for="identificacion">Documento de identificación:</label>
+    <input type="file" name="identificacion" id="identificacion" accept=".pdf, .jpg, .jpeg, .png" />
+    <br />
+    <label for="domicilio">Comprobante de domicilio:</label>
+    <input type="file" name="domicilio" id="domicilio" accept=".pdf, .jpg, .jpeg, .png" />
+    <br />
+    <label for="estadoDeCuenta">Estado de cuenta:</label>
+    <input type="file" name="estadoDeCuenta" id="estadoDeCuenta" accept=".pdf, .jpg, .jpeg, .png" />
+    <br />
+    <br />
+    <button type="submit">Enviar documentos</button>
+  </form>
 {{/if}}
+
+
+{{!-- <h1>Perfil:</h1>
+
+{{#if userData}}
+  <h2>Usuario: {{userData.user}}</h2>
+  <h2>Rol: {{userData.role}}</h2>
+  <h2>ID del Carrito: {{userData.cart}}</h2>
+  <form method="put" action="/api/users/:id/documents" enctype="multipart/form-data">
+    <br />
+    <br />
+    <input type="file" placeholder="Documentos" name="documents" />
+  </form>
+{{/if}} --}}

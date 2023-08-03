@@ -79,19 +79,13 @@ export const uploaderDocsController = async (req, res) => {
       const estadoDeCuenta = req.files["estadoDeCuenta"]?.[0] || null;
       const docs = [];
       if (identificacion) {
-        docs.push({
-          name: "identificacion",
-          reference: identificacion.filename,
-        });
+        docs.push({ name: "identificacion", reference: identificacion.filename });
       }
       if (domicilio) {
         docs.push({ name: "domicilio", reference: domicilio.filename });
       }
       if (estadoDeCuenta) {
-        docs.push({
-          name: "estadoDeCuenta",
-          reference: estadoDeCuenta.filename,
-        });
+        docs.push({ name: "estadoDeCuenta", reference: estadoDeCuenta.filename });
       }
       if (docs.length === 3) {
         user.status = "completo";
@@ -100,7 +94,8 @@ export const uploaderDocsController = async (req, res) => {
       }
       user.documents = docs;
       await userService.updateUser(user.id, user);
-      res.json({ status: "success", message: "Se actualizaron los documentos" });
+      req.logger.info("Se cargaron los documentos correctamente");
+      res.status(200).send(`Se cargaron los documentos correctamente, <a href="/products">Ir a productos</a>`);
     } else {
       res.json({ status: "error", message: "No se pueden cargar los documentos" });
     }
