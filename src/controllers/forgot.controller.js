@@ -2,7 +2,6 @@ import { generateTokenPass } from "../utils/tokenUtils.js";
 import { sendPasswordResetMail } from "../utils/emailUtils.js";
 import { userService } from "../repository/index.js";
 
-
 export const forgotController = async (req, res) => {
     try {
         const {email} = req.body;

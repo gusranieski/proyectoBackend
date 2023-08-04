@@ -2,7 +2,6 @@ import userModel from "../dao/models/user.model.js";
 import { createHash, isValidPassword } from "../utils.js";
 import { verifyTokenPass } from "../utils/tokenUtils.js";
 
-
 export const resetController = async (req, res) => {
     try {
         const token = req.query.token;
@@ -19,11 +18,8 @@ export const resetController = async (req, res) => {
             return res.send("No se puede usar la misma contraseña");
         }
         const userData = {
-            // ...user,
             password: createHash(newPassword)
         }
-        // console.log("userData:", userData);
-        // const userUpdate = await userModel.findOneAndUpdate({email: email}, userData);
         const userUpdate = await userModel.updateOne({email: email}, userData);
 
         res.render("login", { message: "Contraseña actualizada" });
@@ -31,4 +27,4 @@ export const resetController = async (req, res) => {
         res.send(`Error al restablecer la contraseña, <a href="/reset-password">vuelve a intentar</a>`)
         throw error
     }
-}
+};

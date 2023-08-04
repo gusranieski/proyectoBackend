@@ -54,10 +54,9 @@ async function updateCartItemQuantity(cartId, productId, newQuantity) {
             
       location.reload();
     } else {
-      const errorMessage = await response.text(); // Obtener el mensaje de error desde la respuesta
+      const errorMessage = await response.text(); 
       console.error("Error al realizar la compra", errorMessage);
 
-      // Agregar código para mostrar el mensaje de error en la página carts.hbs
       const errorMessageElement = document.getElementById("error-message");
       errorMessageElement.textContent = errorMessage;
     }

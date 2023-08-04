@@ -11,7 +11,6 @@ import { errorHandler } from "./middlewares/errorHandler.js";
 import { addLogger } from "./loggers/logger.js";
 import { swaggerSpecs } from "./config/docConfig.js";
 import swaggerUI from "swagger-ui-express";
-
 import productsRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
 import viewsRouter from "./routes/views.router.js";

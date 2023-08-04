@@ -96,7 +96,7 @@ export class CartManagerMongo {
         throw new Error(`Error: cart with id ${cartId} not found`);
       }
   
-      cart.products = []; // Limpiar el array de productos del carrito
+      cart.products = []; 
       await cart.save();
   
       req.logger.info("Carrito actualizado");

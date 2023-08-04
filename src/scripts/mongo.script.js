@@ -1,4 +1,3 @@
-import mongoose from 'mongoose';
 import productModel from '../dao/models/product.model.js';
 import { connectDB } from '../config/dbConnection.js';
 

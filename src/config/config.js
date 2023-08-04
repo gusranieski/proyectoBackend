@@ -20,6 +20,7 @@ const SECRET_TOKEN_EMAIL = process.env.SECRET_TOKEN_EMAIL;
 const TWILIO_SID = process.env.TWILIO_SID;
 const TWILIO_TOKEN = process.env.TWILIO_TOKEN;
 const TWILIO_SMS_PHONE = process.env.TWILIO_SMS_PHONE;
+const TWILIO_TEST_PHONE = process.env.TWILIO_TEST_PHONE;
 
 export const options = {
   server: {
@@ -47,6 +48,7 @@ export const options = {
   twilio: {
     twilioId: TWILIO_SID,
     twilioToken: TWILIO_TOKEN,
-    twilioPhone: TWILIO_SMS_PHONE
+    twilioPhone: TWILIO_SMS_PHONE,
+    testPhoneNumber: TWILIO_TEST_PHONE
   }
 };

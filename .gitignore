@@ -1,7 +1,7 @@
 node_modules/
 
 # variables de entorno
-.env
+
 
 # desafios anteriores
 desafios/

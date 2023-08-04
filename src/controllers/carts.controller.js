@@ -1,13 +1,9 @@
-// import { CartManager } from "../dao/index.js";
-import { ProductManager } from "../dao/factory.js";
-import { CartManager } from "../dao/factory.js";
+import { ProductManager, CartManager } from "../dao/factory.js";
 import { CustomError } from "../services/customError.js";
 import { EError } from "../enums/EError.js";
 import { errorHandler } from "../middlewares/errorHandler.js";
 import { generateProductErrorParam } from "../services/productError.js";
 import { generateCartErrorParam } from "../services/cartError.js";
-
-// const manager = new CartManager();
 
 export const cartsController = {
 
@@ -22,7 +18,6 @@ export const cartsController = {
     }
   },
 
-
   async addCart(req, res) {
     try {
       const products = req.body;
@@ -34,7 +29,6 @@ export const cartsController = {
       res.status(500).json({ error: "Error al crear el carrito" });
     }
   },
-
 
   async getCartById(req, res) {
     try {
@@ -63,7 +57,6 @@ export const cartsController = {
     }
   },
   
-
   async addProductToCart(req, res) {
     try {
       const cartId = req.params.cid;
@@ -87,7 +80,6 @@ export const cartsController = {
           });
       };
 
-      // Verificar si el usuario está autenticado
       if (!req.user) {
         req.logger.warning("no se inició sesión para agregar un producto al carrito")
         return res.json({ status: "error", message: "Debes iniciar sesión para agregar un producto al carrito" });
@@ -107,7 +99,6 @@ export const cartsController = {
       
       return res.status(200).redirect("/carts/:cid");
 
-      // return res.status(200).send({ status:"success", payload:cart });
     } catch (error) {
       req.logger.error(error);
       res.status(500);

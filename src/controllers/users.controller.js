@@ -1,6 +1,6 @@
 import { userService } from "../repository/index.js";
 import transport from "../config/gmail.js";
-import { twilioClient, twilioPhone } from "../config/twilio.js";
+import { twilioClient, twilioPhone, testPhoneNumber } from "../config/twilio.js";
 
 export const currentUserController = async (req, res) => {
   if (req.user) {
@@ -58,7 +58,7 @@ export const smsUserController = async (req, res) => {
     const message = await twilioClient.messages.create({
       body: "Compra realizada con éxito!",
       from: twilioPhone,
-      to: "+541169736842",
+      to: testPhoneNumber, // test
     });
     console.log("message:", message);
     res.json({ status: "success", message: "Compra realizada y envío de sms exitoso" });
