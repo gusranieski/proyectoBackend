@@ -1,0 +1,19 @@
+<h1>Agregar Nuevo Producto</h1>
+<form class="create" method="post" action="/api/products" enctype="multipart/form-data">
+  <input type="text" placeholder="Título" name="title" />
+  <br />
+  <textarea placeholder="Descripción" name="description" ></textarea>
+  <br />
+  <input type="text" placeholder="Código" name="code" />
+  <br />
+  <input type="number" placeholder="Precio" name="price" />
+  <br />
+  <input type="number" placeholder="Stock" name="stock" />
+  <br />
+  <input type="text" placeholder="Categoría" name="category" />
+  <br />
+  <label for="thumbnail">Imagen del producto:</label>
+  <input type="file" name="thumbnail" id="thumbnail" accept=".jpg, .jpeg, .png" />
+  <br />
+  <input class="btn-create" type="submit" value="Agregar Producto" />
+</form>

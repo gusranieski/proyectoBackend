@@ -1,8 +1,4 @@
 <h1>Iniciar sesión</h1>
-{{#if userData}}
-  <span>Sesión iniciada de {{userData.user}}!</span>
-{{/if}}
-
 <div class="login">
   <form method="post" action="/api/sessions/login">
     <input type="text" placeholder="Email" name="email" />

@@ -1,0 +1,30 @@
+.create {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.create form {
+    margin: 10px 0;
+}
+
+.create input,
+.create textarea {
+    width: 20%;
+    padding: 5px;
+}
+
+.btn-create {
+    width: 100%;
+    padding: 5px;
+    border-style: none;
+    border-radius: 5px;
+    background-color: powderblue;
+    cursor: pointer;
+}
+
+.btn-create:hover {
+    background-color: darkcyan;
+    color: #fff;
+}

@@ -28,7 +28,6 @@ export const productsController = {
     }
   },
   
-
   async getProductById(req, res) {
     try {
       const { id } = req.params;
@@ -70,6 +69,14 @@ export const productsController = {
           errorCode: EError.INVALID_JSON
         });
       }
+
+      const existingProduct = await productModel.findOne({ code });
+
+      if (existingProduct) {
+        req.logger.warning("El código debe ser único");
+        res.status(400).send({ error: "El código debe ser único" });
+        return;
+      }
   
       let owner = req.user.email;
       if (!owner) {
@@ -88,30 +95,18 @@ export const productsController = {
         owner,
       };
 
-      try {
         const newProduct = await ProductManager.addProduct(product);
         req.logger.info("Se creó un nuevo producto");
   
         req.io.emit("new-product", newProduct);
-        res.status(201).send({ status: "success", payload: newProduct });
+        res.status(201).redirect("/create-product");
+
       } catch (error) {
-        if (error.code === 11000) {
-          // El código del producto ya está en uso (error de duplicado)
-          req.logger.warning("El código del producto ya está en uso");
-          res.status(400).send({ error: "El código del producto ya está en uso" });
-        } else {
-          // Otro tipo de error
-          req.logger.error("Error al agregar el producto");
-          res.status(500);
-          errorHandler(error, req, res);
-        }
+        req.logger.error("Error al agregar el producto");
+        res.status(500);
+        errorHandler(error, req, res);
       }
-    } catch (error) {
-      req.logger.error("Error al agregar el producto");
-      res.status(500);
-      errorHandler(error, req, res);
-    }
-  },
+    },
   
   async updateProduct(req, res) {
     try {

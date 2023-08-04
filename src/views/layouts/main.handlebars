@@ -6,11 +6,12 @@
     <link rel="stylesheet" href="/css/main.css" />
     <link rel="stylesheet" href="/css/home.css" />
     <link rel="stylesheet" href="/css/login.css" />
-    <link rel="stylesheet" href="/css/signup.css">
+    <link rel="stylesheet" href="/css/signup.css" />
     <link rel="stylesheet" href="/css/products.css" />
     <link rel="stylesheet" href="/css/cart.css" />
-    <link rel="stylesheet" href="/css/admin.css">
-    <link rel="stylesheet" href="/css/purchase.css">
+    <link rel="stylesheet" href="/css/admin.css" />
+    <link rel="stylesheet" href="/css/purchase.css" />
+    <link rel="stylesheet" href="/css/create-product.css" />
     <title>Ecommerce</title>
   </head>
   <body>
@@ -18,15 +19,17 @@
       <a href="/">Home</a>
       <a href="/login">Iniciar sesión</a>
       <a href="/signup">Registrarse</a>
-      <a href="/admin">Admin Panel</a>
     </div>
     <div>
       {{#if userData}}
         <div class="profile-links">
           <a href="/profile">Perfil</a>
-          <a href="/products">Agregar productos al carrito</a>
+          <a href="/admin">Admin Panel</a>
+          <a href="/create-product">Crear nuevo producto</a>
+          <a href="/products">Productos</a>
           <a href="/carts/:cid">Ver carrito</a>
         </div>
+        <span>Sesión iniciada de {{userData.user}}!</span>
         <form class="form-logout" method="post" action="/api/sessions/logout">
           <button class="btn-logout" type="submit">Cerrar sesión</button>
         </form>

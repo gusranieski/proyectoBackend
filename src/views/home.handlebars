@@ -1,15 +1,10 @@
 <div class="products-list">
   {{#each products}}
-    <div class="product-card">
+    <div class="product-card-home">
       <img src="/multer/products/images/{{thumbnail}}" alt="{{title}}" />
       <ul>
-        <li><span>Producto:</span> {{title}}</li>
-        <li><span>Descripción:</span> {{description}}</li>
-        <li><span>Código:</span> {{code}}</li>
-        <li><span>Precio:</span> {{price}}</li>
-        <li><span>Stock:</span> {{stock}}</li>
-        <li><span>Categoría:</span> {{category}}</li>
-        <li><span>ID:</span> {{_id}}</li>
+        <li><span>{{title}}</span> {{description}}</li>
+        <li><span>$</span> {{price}}</li>
       </ul>
     </div>
   {{/each}}

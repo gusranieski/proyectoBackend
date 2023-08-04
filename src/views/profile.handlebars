@@ -1,5 +1,4 @@
 <h1>Perfil:</h1>
-
 {{#if userData}}
   <h2>Usuario: {{userData.user}}</h2>
   <h2>Rol: {{userData.role}}</h2>
@@ -20,17 +19,3 @@
     <button type="submit">Enviar documentos</button>
   </form>
 {{/if}}
-
-
-{{!-- <h1>Perfil:</h1>
-
-{{#if userData}}
-  <h2>Usuario: {{userData.user}}</h2>
-  <h2>Rol: {{userData.role}}</h2>
-  <h2>ID del Carrito: {{userData.cart}}</h2>
-  <form method="put" action="/api/users/:id/documents" enctype="multipart/form-data">
-    <br />
-    <br />
-    <input type="file" placeholder="Documentos" name="documents" />
-  </form>
-{{/if}} --}}

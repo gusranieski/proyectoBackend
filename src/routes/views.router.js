@@ -11,6 +11,7 @@ import {
   renderResetPassword,
   renderAdminPanel,
   renderPurchase,
+  renderCreateProduct,
 } from "../controllers/views.controller.js";
 import { checkRole } from "../middlewares/auth.js";
 
@@ -27,5 +28,6 @@ viewsRouter.get("/forgot-password", renderForgotPassword);
 viewsRouter.get("/reset-password", renderResetPassword);
 viewsRouter.get("/admin", checkRole(["admin"]), renderAdminPanel);
 viewsRouter.get("/purchase/:ticketId", renderPurchase);
+viewsRouter.get("/create-product", renderCreateProduct);
 
 export default viewsRouter;

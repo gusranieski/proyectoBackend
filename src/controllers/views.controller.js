@@ -1,4 +1,4 @@
-import { ProductManager, CartManager } from "../dao/factory.js";
+import { ProductManager } from "../dao/factory.js";
 import productModel from "../dao/models/product.model.js";
 import cartModel from "../dao/models/cart.model.js";
 import userModel from "../dao/models/user.model.js";
@@ -12,6 +12,11 @@ export const renderHome = async (req, res) => {
 export const renderRealTimeProducts = async (req, res) => {
   const products = await ProductManager.getProducts();
   res.render("real_time_products", { products });
+};
+
+export const renderCreateProduct =  (req, res) => {
+  const userData = req.user ? { user: req.user.email } : null; 
+  res.render("create-product", { userData });
 };
 
 export const renderProducts = async (req, res) => {

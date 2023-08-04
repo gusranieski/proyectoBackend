@@ -6,7 +6,7 @@
     padding: 30px;
 }
 
-.product-card {
+.product-card-home {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -18,24 +18,16 @@
     min-height: 360px;
 }
 
-.product-card ul {
+.product-card-home ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
 }
 
-.product-card li {
+.product-card-home li {
     margin-bottom: 8px;
 }
 
-.product-card span {
+.product-card-home span {
     font-weight: bold;
-}
-
-.product-card img {
-    width: 100%;
-    max-height: 200px;
-    object-fit: cover;
-    margin-bottom: 10px;
-    background-color: #ccc;
 }
